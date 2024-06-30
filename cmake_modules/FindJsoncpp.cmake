@@ -11,12 +11,19 @@
 # Jsoncpp_lib - The imported target library.
 
 # only look in default directories
-find_path(JSONCPP_INCLUDE_DIRS
-          NAMES json/json.h
+find_path(JSONCPP_INCLUDE_DIRS json.h
+          NAMES json.h
           DOC "jsoncpp include dir"
-          PATH_SUFFIXES jsoncpp)
+          PATH_SUFFIXES jsoncpp
+          PATHS
+            C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include
+            C:/Users/Tristan/vcpkg/installed/x64-windows/include)
+set(JSONCPP_INCLUDE_DIRS C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
+include_directories(BEFORE c:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
+#target_include_directories(jsoncpp c:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include/json/json.h)
 
-find_library(JSONCPP_LIBRARIES NAMES jsoncpp DOC "jsoncpp library")
+list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
+find_library(JSONCPP_LIBRARIES NAMES json libjsoncpp.dll DOC "jsoncpp library")
 if(JSONCPP_WITH_CMAKE_PACKAGE)
   include (CMakePackageConfigHelpers)
   install(EXPORT jsoncpp
@@ -28,7 +35,6 @@ if(JSONCPP_WITH_CMAKE_PACKAGE)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/jsoncppConfigVersion.cmake
           DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/jsoncpp)
 endif()
-
 # debug library on windows same naming convention as in qt (appending debug
 # library with d) boost is using the same "hack" as us with "optimized" and
 # "debug" if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")

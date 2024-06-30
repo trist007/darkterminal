@@ -85,7 +85,7 @@ module where to look.
 #]=======================================================================]
 
 cmake_policy(PUSH)
-cmake_policy(SET CMP0159 NEW) # file(STRINGS) with REGEX updates CMAKE_MATCH_<n>
+#cmake_policy(SET CMP0159 NEW) # file(STRINGS) with REGEX updates CMAKE_MATCH_<n>
 
 if(ZLIB_FIND_COMPONENTS AND NOT ZLIB_FIND_QUIETLY)
     message(AUTHOR_WARNING
