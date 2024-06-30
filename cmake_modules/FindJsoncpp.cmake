@@ -16,9 +16,10 @@ find_path(JSONCPP_INCLUDE_DIRS json.h
           DOC "jsoncpp include dir"
           PATH_SUFFIXES jsoncpp
           PATHS
-            C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include
-            C:/Users/Tristan/vcpkg/installed/x64-windows/include)
+            C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
+            #C:/Users/Tristan/vcpkg/installed/x64-windows/include)
 set(JSONCPP_INCLUDE_DIRS C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
+set(JSONCPP_LIBRARIES C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin)
 include_directories(BEFORE c:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
 #target_include_directories(jsoncpp c:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include/json/json.h)
 
