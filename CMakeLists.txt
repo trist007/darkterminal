@@ -181,9 +181,9 @@ endif()
 
 
 # jsoncpp
-find_package(Jsoncpp REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
-list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
+#find_package(Jsoncpp REQUIRED)
+#target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
+#list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
 # yamlcpp
 if(BUILD_YAML_CONFIG)
@@ -494,8 +494,8 @@ if (BUILD_TESTING)
     add_subdirectory(nosql_lib/redis/tests)
 endif (BUILD_TESTING)
 
-find_package(ZLIB REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+#find_package(ZLIB REQUIRED PATHS c:/JetBrains/CLion/bin/mingw/x86_64-w64-mingw32)
+#target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 execute_process(COMMAND "git" rev-parse HEAD
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
