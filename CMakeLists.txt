@@ -29,6 +29,7 @@ set(DROGON_VERSION
     ${DROGON_MAJOR_VERSION}.${DROGON_MINOR_VERSION}.${DROGON_PATCH_VERSION})
 set(DROGON_VERSION_STRING "${DROGON_VERSION}")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+set(GCC_COVERAGE_LINK_FLAGS "ljsoncpp -lzlib1")
 
 include(GNUInstallDirs)
 # Offer the user the choice of overriding the installation directories
