@@ -2,3 +2,8 @@
 	path = trantor
 	url = https://github.com/an-tao/trantor.git
 	branch = master
+
+[submodule "jsoncpp"]
+    path = jsoncpp
+    url = https://github.com/open-source-parsers/jsoncpp.git
+    branch = master

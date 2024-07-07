@@ -793,7 +793,7 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/DrogonConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/DrogonConfigVersion.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindUUID.cmake"
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindJsoncpp.cmake"
+    #"${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindJsoncpp.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindSQLite3.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindMySQL.cmake"
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/Findpg.cmake"
@@ -852,7 +852,7 @@ if(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 include(cmake/Packages.cmake)
-include(cmake_modules/FindJsoncpp.cmake)
+#include(cmake_modules/FindJsoncpp.cmake)
 include(cmake_modules/FindZLIB.cmake)
 set(JSONCPP_INCLUDE_DIRS C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
 set(JSONCPP_LIBRARIES C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin)
