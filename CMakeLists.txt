@@ -28,16 +28,16 @@ set(DROGON_PATCH_VERSION 5)
 set(DROGON_VERSION
     ${DROGON_MAJOR_VERSION}.${DROGON_MINOR_VERSION}.${DROGON_PATCH_VERSION})
 set(DROGON_VERSION_STRING "${DROGON_VERSION}")
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-set(GCC_COVERAGE_LINK_FLAGS "ljsoncpp -lzlib1")
+
+find_library(jsoncpp NAMES libjsoncpp.a PATHS /usr/local/lib)
+#set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+#set(GCC_COVERAGE_LINK_FLAGS "ljsoncpp -lzlib1")
 
 include(GNUInstallDirs)
 # Offer the user the choice of overriding the installation directories
 set(INSTALL_LIB_DIR ${CMAKE_INSTALL_LIBDIR} CACHE PATH "Installation directory for libraries")
 set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR} CACHE PATH "Installation directory for header files")
 set(INSTALL_BIN_DIR ${CMAKE_INSTALL_BINDIR} CACHE PATH "Installation directory for executables")
-#set(INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/vcpkg/installed/x64-mingw-dynamic/bin CACHE PATH "Installation directory for libraries")
-#set(INSTALL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/vcpkg/installed/x64-mingw-dynamic/include CACHE PATH "Installation directory for header files")
 set(DEF_INSTALL_DROGON_CMAKE_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/Drogon)
 set(INSTALL_DROGON_CMAKE_DIR ${DEF_INSTALL_DROGON_CMAKE_DIR}
     CACHE PATH "Installation directory for cmake files")
@@ -182,10 +182,6 @@ if(TARGET std::filesystem)
   endif()
 endif()
 
-
-# jsoncpp
-#find_package(Jsoncpp REQUIRED)
-#list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
 # yamlcpp
 if(BUILD_YAML_CONFIG)
@@ -495,9 +491,6 @@ endif (NOT Hiredis_FOUND)
 if (BUILD_TESTING)
     add_subdirectory(nosql_lib/redis/tests)
 endif (BUILD_TESTING)
-
-#find_package(ZLIB REQUIRED PATHS c:/JetBrains/CLion/bin/mingw/x86_64-w64-mingw32)
-#target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 execute_process(COMMAND "git" rev-parse HEAD
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -854,18 +847,3 @@ endif(DOXYGEN_FOUND)
 include(cmake/Packages.cmake)
 #include(cmake_modules/FindJsoncpp.cmake)
 include(cmake_modules/FindZLIB.cmake)
-set(JSONCPP_INCLUDE_DIRS C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
-set(JSONCPP_LIBRARIES C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin)
-set(ZLIB_INCLUDE_DIR C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/include)
-set(ZLIB_LIBRARY_RELEASE C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin)
-
-find_library(JSONCPP_LIBRARIES NAMES libjsoncpp.dll DOC "jsoncpp library")
-find_library(ZLIB_LIBRARY_RELEASE NAMES libzlib1.dll DOC "zlib library")
-target_link_libraries(${PROJECT_NAME} PUBLIC C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin/libjsoncpp.dll)
-target_link_libraries(${PROJECT_NAME} PUBLIC C:/Users/Tristan/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/bin/libzlib1.dll)
-link_libraries(${JSONCPP_LIBRARIES})
-link_libraries(${ZLIB_LIBRARY_RELEASE})
-message(STATUS "JSONCPP_INCLUDE_DIRS=${JSONCPP_INCLUDE_DIRS}")
-message(STATUS "JSONCPP_LIBRARIES=${JSONCPP_LIBRARIES}")
-message(STATUS "ZLIB_INCLUDE_DIR=${ZLIB_INCLUDE_DIR}")
-message(STATUS "ZLIB_LIBRARY_RELEASE=${ZLIB_LIBRARY_RELEASE}")
