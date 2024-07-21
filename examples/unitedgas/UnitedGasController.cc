@@ -3,7 +3,7 @@
 using namespace drogon;
 
 // HttpControllers are automatically added to Drogon upon Drogon initializing.
-class SayHello : public HttpController<Wells>
+class UnitedGas : public HttpController<UnitedGas>
 {
   public:
     METHOD_LIST_BEGIN
@@ -12,29 +12,30 @@ class SayHello : public HttpController<Wells>
     // a handler to /. But because it is a part of the SayHello controller. It
     // ends up in path /SayHello/ (IMPORTANT! It is /SayHello/ not /SayHello
     // as they are different paths).
-    METHOD_ADD(Wells::genericDisplay, "/", Get);
+    METHOD_ADD(UnitedGas::genericHello, "/", Get);
     // Same for /hello. It ends up at /SayHello/hello
-    METHOD_ADD(Wells::personalizedModify, "/modify", Get);
+    METHOD_ADD(UnitedGas::personalizedHello, "/hello", Get);
     METHOD_LIST_END
 
   protected:
-    void genericDisplay(const HttpRequestPtr &,
+    void genericHello(const HttpRequestPtr &,
                       std::function<void(const HttpResponsePtr &)> &&callback)
     {
         auto resp = HttpResponse::newHttpResponse();
         resp->setBody(
-            "Wells will go HERE"
-            "controller");
+            "Hello, this is a generic hello message from the SayHello "
+            "controller in UnitedGas");
         callback(resp);
     }
 
-    void personalizedModify(
+    void personalizedHello(
         const HttpRequestPtr &,
         std::function<void(const HttpResponsePtr &)> &&callback)
     {
         auto resp = HttpResponse::newHttpResponse();
         resp->setBody(
-            "Modify Wells HERE");
+            "Hi there, this is another hello from the SayHello Controller "
+            "in United Gas");
         callback(resp);
     }
 };

@@ -5,7 +5,7 @@
 	bool nameIsEmpty = name == "";
 	if (nameIsEmpty)
 		name = "anonymous";
-	auto message = "Hello, " + name + " from a CSP template";
+	auto message = "Hello, " + name + " from a CSP template from United Gas";
 %>
 <head>
     <meta charset="UTF-8">
