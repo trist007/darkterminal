@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<%c++
+    auto wellname=@@.get<std::string>("wellname");
+    auto wellno=@@.get<std::string>("wellno");
+	bool nameIsEmpty = wellname == "";
+	if (nameIsEmpty)
+		wellname = "anonymous";
+	auto message = "well no, " + wellno + " well name " + wellname + " from a CSP template from United Gas";
+%>
+<head>
+    <meta charset="UTF-8">
+    <title>[[ name ]]</title>
+</head>
+<body>
+    <%c++ $$<<message; %>
+	<%c++
+	if (nameIsEmpty)
+	{
+		$$ << "<br>"
+			<< "You can revisit the same page and append ?name=<i>your_name</i> to change the name";
+	}
+	%>
+</body>
+</html>

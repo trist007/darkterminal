@@ -9,7 +9,7 @@ int main()
     app().registerHandler(
         "/",
         [](const HttpRequestPtr &,
-           std::function<void(const HttpResponsePtr &)> &&callback) {
+                  std::function<void(const HttpResponsePtr &)> &&callback) {
             auto resp = HttpResponse::newHttpResponse();
             resp->setBody("Hello");
             callback(resp);
