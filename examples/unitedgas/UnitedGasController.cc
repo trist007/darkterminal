@@ -43,8 +43,8 @@ class UnitedGas : public HttpController<UnitedGas>
                           std::string(),
                           "Packer @600'"};
         // Use the object's methods to get the name and well number
-        data["wellname"] = myobj.m_wellname;
-        data["wellno"] = myobj.m_wellno;
+        data["wellname"] = myobj.get_wellname();
+        data["wellno"] = myobj.get_wellno();
 
         auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
         callback(resp);
@@ -61,3 +61,4 @@ class UnitedGas : public HttpController<UnitedGas>
         callback(resp);
     }
 };
+
