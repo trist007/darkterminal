@@ -1,8 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <%c++
-    auto wellname=@@.get<std::string>("wellname");
     auto wellno=@@.get<std::string>("wellno");
+    auto dailyOil=@@.get<std::string>("dailyOil");
+    auto dailyWater=@@.get<std::string>("dailyWater");
+    auto dailyGas=@@.get<std::string>("dailyGas");
+    auto opPressureTubing=@@.get<std::string>("opPressureTubing");
+    auto opPressureCasing=@@.get<std::string>("opPressureCasing");
+    auto strokesPerMin=@@.get<std::string>("strokesPerMin");
+    auto strokeLength=@@.get<std::string>("strokeLength");
+    auto motorHp=@@.get<std::string>("motorHp");
+    auto pumpingRatio=@@.get<std::string>("pumpingRatio");
+    auto unitGearRatio=@@.get<std::string>("unitGearRatio");
+    auto wellname=@@.get<std::string>("wellname");
+    auto dateOfRecentTest=@@.get<std::string>("dateOfRecentTest");
+    auto pumpingUnitSize=@@.get<std::string>("pumpingUnitSize");
+    auto casingSize=@@.get<std::string>("casingSize");
+    auto depth=@@.get<std::string>("depth");
+    auto tubingSize=@@.get<std::string>("tubingSize");
+    auto pumpSize=@@.get<std::string>("pumpSize");
+    auto firstCole=@@.get<std::string>("firstCole");
+    auto secondCole=@@.get<std::string>("secondCole");
+    auto thirdCole=@@.get<std::string>("thirdCole");
+    auto comments=@@.get<std::string>("comments");
 	bool nameIsEmpty = wellname == "";
 	if (nameIsEmpty)
 		wellname = "anonymous";
@@ -10,9 +30,256 @@
 %>
 <head>
     <meta charset="UTF-8">
-    <title>[[ name ]]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UnitedGas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Well Number</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<wellno; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <form action="valueHandler.csp" method="POST">
+      <input type="text" name="wellno" required>
+      <input type="update" value="Update">
+  </form>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Daily Oil</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<dailyOil; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Daily Water</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<dailyWater; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Daily Gas</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<dailyGas; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Operating Pressure Tubing</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<opPressureTubing; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Operating Pressure Casing</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<opPressureCasing; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Strokes per Min</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<strokesPerMin; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Stroke Length</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<strokeLength; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Motor Hp</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<motorHp; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Pumping Ratio</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<pumpingRatio; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Unit Gear Ratio</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<unitGearRatio; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Well Name</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<wellname; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Date of Recent Test</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<dateOfRecentTest; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Pumping Unit Size</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<pumpingUnitSize; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Casing Size</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<casingSize; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Depth</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<depth; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Tubing Size</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<tubingSize; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Pump Size</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<pumpSize; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">First Cole</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<firstCole; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Second Cole</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<secondCole; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Third Cole</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<thirdCole; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
+<div class="mb-3" style="padding:10px">
+  <label for="basic-url" class="form-label">Comments</label>
+  <div class="input-group" style="padding:10px">
+    <span class="input-group-text" id="basic-addon3">
+    <%c++ $$<<comments; %>
+    </span>
+    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+  </div>
+  <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+</div>
+
     <%c++ $$<<message; %>
 	<%c++
 	if (nameIsEmpty)
