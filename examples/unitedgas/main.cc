@@ -66,5 +66,8 @@ int main()
     // you want the server also listen on 127.0.0.1 port 5555. Just add another
     // line of addListener("127.0.0.1", 5555)
     LOG_INFO << "Server running on 127.0.0.1:8848";
-    app().addListener("127.0.0.1", 8848).run();
+    app()
+        .enableSession(86400)
+        .addListener("127.0.0.1", 8848)
+        .run();
 }

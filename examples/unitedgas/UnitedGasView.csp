@@ -44,9 +44,10 @@
     </span>
     <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
   </div>
-  <form action="valueHandler.csp" method="POST">
-      <input type="text" name="wellno" required>
-      <input type="update" value="Update">
+  <form action="/UnitedGas/formHandler" method="post">
+      <label for="wellno">well no:</label>
+      <input type="text" id="wellno" name="wellno"> <br>
+      <input type="submit" value="Submit">
   </form>
 
 <div class="mb-3" style="padding:10px">
