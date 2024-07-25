@@ -42,9 +42,30 @@ class UnitedGas : public HttpController<UnitedGas>
                           std::string(),
                           std::string(),
                           "Packer @600'"};
+
         // Use the object's methods to get the name and well number
-        data["wellname"] = myobj.get_wellname();
         data["wellno"] = myobj.get_wellno();
+        data["dailyOil"] = myobj.get_dailyOil();
+        data["dailyWater"] = myobj.get_dailyWater();
+        data["dailyGas"] = myobj.get_dailyGas();
+        data["opPressureTubing"] = myobj.get_opPressureTubing();
+        data["opPressureCasing"] = myobj.get_opPressureCasing();
+        data["strokesPerMin"] = myobj.get_strokesPerMin();
+        data["strokeLength"] = myobj.get_strokeLength();
+        data["motorHp"] = myobj.get_motorHp();
+        data["pumpingRatio"] = myobj.get_pumpingRatio();
+        data["unitGearRatio"] = myobj.get_unitGearRatio();
+        data["wellname"] = myobj.get_wellname();
+        data["dateOfRecentTest"] = myobj.get_dateOfRecentTest();
+        data["pumpingUnitSize"] = myobj.get_pumpingUnitSize();
+        data["casingSize"] = myobj.get_casingSize();
+        data["depth"] = myobj.get_depth();
+        data["tubingSize"] = myobj.get_tubingSize();
+        data["pumpSize"] = myobj.get_pumpSize();
+        data["firstCole"] = myobj.get_firstCole();
+        data["secondCole"] = myobj.get_secondCole();
+        data["thirdCole"] = myobj.get_thirdCole();
+        data["comments"] = myobj.get_comments();
 
         auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
         callback(resp);
