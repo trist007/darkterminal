@@ -1,23 +1,112 @@
 #include <drogon/drogon.h>
+
+#include <unitedgas/Well.h>
 using namespace drogon;
 
 int main()
 {
+    std::shared_ptr<Well> well_ptr = std::make_shared<Well>("2",
+                    "1",
+                    "295",
+                    "0",
+                    "0",
+                    "0",
+                    "10",
+                    "48",
+                    "20",
+                    "0",
+                    "0",
+                    "Number 2",
+                    "8/10/2016",
+                    "National 67B",
+                    std::string(),
+                    "1710??",
+                    "2 7/8",
+                    "2 3/4",
+                    "1697 - 1701",
+                    std::string(),
+                    std::string(),
+                    "Packer @600'");
     // `registerHandler()` adds a handler to the desired path. The handler is
     // responsible for generating a HTTP response upon an HTTP request being
     // sent to Drogon
     app().registerHandler(
         "/",
-        [](const HttpRequestPtr &,
+        [well_ptr](const HttpRequestPtr &,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
-            auto resp = HttpResponse::newHttpResponse();
-            resp->setBody("Hello");
+
+        HttpViewData data;
+        data["wellno"] = well_ptr->get_wellno();
+        data["dailyOil"] = well_ptr->get_dailyOil();
+        data["dailyWater"] = well_ptr->get_dailyWater();
+        data["dailyGas"] = well_ptr->get_dailyGas();
+        data["opPressureTubing"] = well_ptr->get_opPressureTubing();
+        data["opPressureCasing"] = well_ptr->get_opPressureCasing();
+        data["strokesPerMin"] = well_ptr->get_strokesPerMin();
+        data["strokeLength"] = well_ptr->get_strokeLength();
+        data["motorHp"] = well_ptr->get_motorHp();
+        data["pumpingRatio"] = well_ptr->get_pumpingRatio();
+        data["unitGearRatio"] = well_ptr->get_unitGearRatio();
+        data["wellname"] = well_ptr->get_wellname();
+        data["dateOfRecentTest"] = well_ptr->get_dateOfRecentTest();
+        data["pumpingUnitSize"] = well_ptr->get_pumpingUnitSize();
+        data["casingSize"] = well_ptr->get_casingSize();
+        data["depth"] = well_ptr->get_depth();
+        data["tubingSize"] = well_ptr->get_tubingSize();
+        data["pumpSize"] = well_ptr->get_pumpSize();
+        data["firstCole"] = well_ptr->get_firstCole();
+        data["secondCole"] = well_ptr->get_secondCole();
+        data["thirdCole"] = well_ptr->get_thirdCole();
+        data["comments"] = well_ptr->get_comments();
+
+        auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
+            //auto resp = HttpResponse::newHttpResponse();
+            //resp->setBody("Hello");
             callback(resp);
         },
         {Get});
 
+        app().registerHandler(
+        "/formHandler",
+        [well_ptr](const HttpRequestPtr &req,
+                  std::function<void(const HttpResponsePtr &)> &&callback) {
+
+        HttpViewData data;
+            /*
+        data["dailyOil"] = well_ptr->set_dailyOil();
+        data["dailyWater"] = well_ptr->set_dailyWater();
+        data["dailyGas"] = well_ptr->set_dailyGas();
+        data["opPressureTubing"] = well_ptr->set_opPressureTubing();
+        data["opPressureCasing"] = well_ptr->set_opPressureCasing();
+        data["strokesPerMin"] = well_ptr->set_strokesPerMin();
+        data["strokeLength"] = well_ptr->set_strokeLength();
+        data["motorHp"] = well_ptr->set_motorHp();
+        data["pumpingRatio"] = well_ptr->set_pumpingRatio();
+        data["unitGearRatio"] = well_ptr->set_unitGearRatio();
+        data["wellname"] = well_ptr->set_wellname();
+        data["dateOfRecentTest"] = well_ptr->set_dateOfRecentTest();
+        data["pumpingUnitSize"] = well_ptr->set_pumpingUnitSize();
+        data["casingSize"] = well_ptr->set_casingSize();
+        data["depth"] = well_ptr->set_depth();
+        data["tubingSize"] = well_ptr->set_tubingSize();
+        data["pumpSize"] = well_ptr->set_pumpSize();
+        data["firstCole"] = well_ptr->set_firstCole();
+        data["secondCole"] = well_ptr->set_secondCole();
+        data["thirdCole"] = well_ptr->set_thirdCole();
+        data["comments"] = well_ptr->set_comments();
+        */
+
+        well_ptr->set_wellno(req->getParameter("wellno"));
+        //auto resp = HttpResponse::newHttpResponse();
+        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848");
+            //auto resp = HttpResponse::newHttpResponse();
+            //resp->setBody("Hello");
+            callback(resp);
+        },
+        {Post});
     // `registerHandler()` also supports parsing and passing the path as
-    // parameters to the handler. Parameters are specified using {}. The text
+
+   // parameters to the handler. Parameters are specified using {}. The text
     // inside the {} does not correspond to the index of parameter passed to the
     // handler (nor it has any meaning). Instead, it is only to make it easier
     // for users to recognize the function of each parameter.

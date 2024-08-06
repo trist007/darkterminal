@@ -44,7 +44,7 @@
     </span>
     <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
   </div>
-  <form action="/UnitedGas/formHandler" method="post">
+  <form action="/formHandler" method="post">
       <label for="wellno">well no:</label>
       <input type="text" id="wellno" name="wellno"> <br>
       <input type="submit" value="Submit">
