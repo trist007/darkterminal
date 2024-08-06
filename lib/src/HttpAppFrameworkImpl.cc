@@ -39,6 +39,7 @@
 #include "StaticFileRouter.h"
 
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <tuple>
 #include <unordered_map>
@@ -1029,6 +1030,10 @@ void HttpAppFrameworkImpl::quit()
 {
     if (getLoop()->isRunning())
     {
+        std::ofstream myfile;
+        myfile.open ("inga.txt");
+        myfile << "testing 1 2 3\n";
+        myfile.close();
         getLoop()->queueInLoop([this]() {
             // Release members in the reverse order of initialization
             listenerManagerPtr_->stopListening();
