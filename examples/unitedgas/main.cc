@@ -71,32 +71,50 @@ int main()
         [well_ptr](const HttpRequestPtr &req,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
 
-        HttpViewData data;
-            /*
-        data["dailyOil"] = well_ptr->set_dailyOil();
-        data["dailyWater"] = well_ptr->set_dailyWater();
-        data["dailyGas"] = well_ptr->set_dailyGas();
-        data["opPressureTubing"] = well_ptr->set_opPressureTubing();
-        data["opPressureCasing"] = well_ptr->set_opPressureCasing();
-        data["strokesPerMin"] = well_ptr->set_strokesPerMin();
-        data["strokeLength"] = well_ptr->set_strokeLength();
-        data["motorHp"] = well_ptr->set_motorHp();
-        data["pumpingRatio"] = well_ptr->set_pumpingRatio();
-        data["unitGearRatio"] = well_ptr->set_unitGearRatio();
-        data["wellname"] = well_ptr->set_wellname();
-        data["dateOfRecentTest"] = well_ptr->set_dateOfRecentTest();
-        data["pumpingUnitSize"] = well_ptr->set_pumpingUnitSize();
-        data["casingSize"] = well_ptr->set_casingSize();
-        data["depth"] = well_ptr->set_depth();
-        data["tubingSize"] = well_ptr->set_tubingSize();
-        data["pumpSize"] = well_ptr->set_pumpSize();
-        data["firstCole"] = well_ptr->set_firstCole();
-        data["secondCole"] = well_ptr->set_secondCole();
-        data["thirdCole"] = well_ptr->set_thirdCole();
-        data["comments"] = well_ptr->set_comments();
-        */
-
-        well_ptr->set_wellno(req->getParameter("wellno"));
+        if (!req->getParameter("wellno").empty())
+          well_ptr->set_wellno(req->getParameter("wellno"));
+        if (!req->getParameter("dailyOil").empty())
+          well_ptr->set_dailyOil(req->getParameter("dailyOil"));
+        if (!req->getParameter("dailyWater").empty())
+          well_ptr->set_dailyWater(req->getParameter("dailyWater"));
+        if(!req->getParameter("dailyGas").empty())
+          well_ptr->set_dailyGas(req->getParameter("dailyGas"));
+        if(!req->getParameter("opPressureTubing").empty())
+          well_ptr->set_opPressureTubing(req->getParameter("opPressureTubing"));
+        if(!req->getParameter("opPressureCasing").empty())
+          well_ptr->set_opPressureCasing(req->getParameter("opPressureCasing"));
+        if(!req->getParameter("strokesPerMin").empty())
+          well_ptr->set_strokesPerMin(req->getParameter("strokesPerMin"));
+        if(!req->getParameter("strokeLength").empty())
+          well_ptr->set_strokeLength(req->getParameter("strokeLength"));
+        if(!req->getParameter("motorHp").empty())
+          well_ptr->set_motorHp(req->getParameter("motorHp"));
+        if(!req->getParameter("pumpingRatio").empty())
+          well_ptr->set_pumpingRatio(req->getParameter("pumpingRatio"));
+        if(!req->getParameter("unitGearRatio").empty())
+          well_ptr->set_unitGearRatio(req->getParameter("unitGearRatio"));
+        if(!req->getParameter("wellname").empty())
+          well_ptr->set_wellname(req->getParameter("wellname"));
+        if(!req->getParameter("dateOfRecentTest").empty())
+          well_ptr->set_dateOfRecentTest(req->getParameter("dateOfRecentTest"));
+        if(!req->getParameter("pumpingUnitSize").empty())
+          well_ptr->set_pumpingUnitSize(req->getParameter("pumpingUnitSize"));
+        if(!req->getParameter("casingSize").empty())
+          well_ptr->set_casingSize(req->getParameter("casingSize"));
+        if(!req->getParameter("depth").empty())
+          well_ptr->set_depth(req->getParameter("depth"));
+        if(!req->getParameter("tubingSize").empty())
+          well_ptr->set_tubingSize(req->getParameter("tubingSize"));
+        if(!req->getParameter("pumpSize").empty())
+          well_ptr->set_pumpSize(req->getParameter("pumpSize"));
+        if(!req->getParameter("firstCole").empty())
+          well_ptr->set_firstCole(req->getParameter("firstCole"));
+        if(!req->getParameter("secondCole").empty())
+          well_ptr->set_secondCole(req->getParameter("secondCole"));
+        if(!req->getParameter("thirdCole").empty())
+          well_ptr->set_thirdCole(req->getParameter("thirdCole"));
+        if(!req->getParameter("comments").empty())
+          well_ptr->set_comments(req->getParameter("comments"));
         //auto resp = HttpResponse::newHttpResponse();
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848");
             //auto resp = HttpResponse::newHttpResponse();
