@@ -109,7 +109,18 @@ class Well {
     const std::string get_comments() const { return m_comments; }
 
     // setters
-    void set_wellno(const std::string& newvalue) { m_wellno = newvalue; }
+  /*
+    void set_wellno(const std::string& newvalue)
+    {
+      std::string encoded_value = newvalue;
+      encode(encoded_value);
+      m_wellno = encoded_value;
+    }
+    */
+    void set_wellno(std::string& newvalue)
+    {
+      m_wellno = encode(newvalue);
+    }
     void set_dailyOil(const std::string& newvalue) { m_dailyOil = newvalue; }
     void set_dailyWater(const std::string& newvalue) { m_dailyWater = newvalue; }
     void set_dailyGas(const std::string& newvalue) { m_dailyGas = newvalue; }
@@ -138,5 +149,21 @@ class Well {
     m_pumpingUnitSize, m_casingSize, m_depth, m_tubingSize, m_pumpSize, m_firstCole, m_secondCole, m_thirdCole,
     m_comments, m_filename;
 
+  std::string encode(std::string& data) {
+    std::string buffer;
+    buffer.reserve(data.size());
+    for(size_t pos = 0; pos != data.size(); ++pos) {
+      switch(data[pos]) {
+        case '&':  buffer.append("&amp;");       break;
+        case '\"': buffer.append("&quot;");      break;
+        case '\'': buffer.append("&apos;");      break;
+        case '<':  buffer.append("&lt;");        break;
+        case '>':  buffer.append("&gt;");        break;
+        default:   buffer.append(&data[pos], 1); break;
+      }
+    }
+    //data.swap(buffer);
+    return buffer;
+  }
 };
 
