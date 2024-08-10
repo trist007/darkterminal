@@ -7,13 +7,46 @@
 
 using namespace drogon;
 
+std::string encode(std::string &data)
+{
+    std::string buffer;
+    buffer.reserve(data.size());
+    for (size_t pos = 0; pos != data.size(); ++pos)
+    {
+        switch (data[pos])
+        {
+            case '&':
+                buffer.append("&amp;");
+                break;
+            case '\"':
+                buffer.append("&quot;");
+                break;
+            case '\'':
+                buffer.append("&apos;");
+                break;
+            case '<':
+                buffer.append("&lt;");
+                break;
+            case '>':
+                buffer.append("&gt;");
+                break;
+            default:
+                buffer.append(&data[pos], 1);
+                break;
+        }
+    }
+    // data.swap(buffer);
+    return buffer;
+}
+
 int main()
 {
-//    std::shared_ptr<Well> well_ptr;
-Well *well_ptr;
+  std::shared_ptr<Well> well_ptr;
+//Well *well_ptr;
     try
     {
-        well_ptr = new Well("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db");
+        well_ptr = std::make_shared<Well>("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db");
+        //well_ptr = new Well("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db");
     }
     catch (std::bad_alloc& ba)
     {
@@ -65,8 +98,14 @@ Well *well_ptr;
         [well_ptr](const HttpRequestPtr &req,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
 
+        std::string data, encoded_data;
+
         if (!req->getParameter("wellno").empty())
-          well_ptr->set_wellno(req->getParameter("wellno"));
+        {
+            data = req->getParameter("wellno");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if (!req->getParameter("dailyOil").empty())
           well_ptr->set_dailyOil(req->getParameter("dailyOil"));
         if (!req->getParameter("dailyWater").empty())
