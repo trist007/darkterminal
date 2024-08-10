@@ -6,12 +6,13 @@
 class Well {
   public:
     Well(const std::string filename)
-      :m_wellno(""), m_dailyOil(""), m_dailyWater(""), m_dailyGas(""),
+                  :m_wellno(""), m_dailyOil(""), m_dailyWater(""), m_dailyGas(""),
                   m_opPressureTubing(""), m_opPressureCasing(""), m_strokesPerMin(""),
                   m_strokeLength(""), m_motorHp(""), m_pumpingRatio(""), m_unitGearRatio(""),
                   m_wellname(""), m_dateOfRecentTest(""), m_pumpingUnitSize(""),
                   m_casingSize(""), m_depth(""), m_tubingSize(""), m_pumpSize(""),
-                  m_firstCole(""), m_secondCole(""), m_thirdCole(""), m_comments("")
+                  m_firstCole(""), m_secondCole(""), m_thirdCole(""), m_comments(""),
+                  m_filename(filename)
     {
       std::ifstream myfile;
 
@@ -44,6 +45,43 @@ class Well {
       std::getline(myfile, m_comments);
 
       myfile.close();
+    }
+
+    int writetoFile()
+    {
+      std::ofstream myfile;
+
+      myfile.open (m_filename);
+      if(!myfile) {
+        throw std::runtime_error("error opening file");
+      }
+
+      myfile << m_wellno << std::endl;
+      myfile << m_dailyOil << std::endl;
+      myfile << m_dailyWater << std::endl;
+      myfile << m_dailyGas << std::endl;
+      myfile << m_opPressureTubing << std::endl;
+      myfile << m_opPressureCasing << std::endl;
+      myfile << m_strokesPerMin << std::endl;
+      myfile << m_strokeLength << std::endl;
+      myfile << m_motorHp << std::endl;
+      myfile << m_pumpingRatio << std::endl;
+      myfile << m_unitGearRatio << std::endl;
+      myfile << m_wellname << std::endl;
+      myfile << m_dateOfRecentTest << std::endl;
+      myfile << m_pumpingUnitSize << std::endl;
+      myfile << m_casingSize << std::endl;
+      myfile << m_depth << std::endl;
+      myfile << m_tubingSize << std::endl;
+      myfile << m_pumpSize << std::endl;
+      myfile << m_firstCole << std::endl;
+      myfile << m_secondCole << std::endl;
+      myfile << m_thirdCole << std::endl;
+      myfile << m_comments << std::endl;
+
+      myfile.close();
+
+      return 0;
     }
 
     // getters
@@ -98,6 +136,7 @@ class Well {
     std::string m_wellno, m_dailyOil, m_dailyWater, m_dailyGas, m_opPressureTubing, m_opPressureCasing,
     m_strokesPerMin, m_strokeLength, m_motorHp, m_pumpingRatio, m_unitGearRatio, m_wellname, m_dateOfRecentTest,
     m_pumpingUnitSize, m_casingSize, m_depth, m_tubingSize, m_pumpSize, m_firstCole, m_secondCole, m_thirdCole,
-    m_comments;
+    m_comments, m_filename;
+
 };
 

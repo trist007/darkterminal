@@ -110,6 +110,7 @@ Well *well_ptr;
         if(!req->getParameter("comments").empty())
           well_ptr->set_comments(req->getParameter("comments"));
         //auto resp = HttpResponse::newHttpResponse();
+        well_ptr->writetoFile();
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848");
             //auto resp = HttpResponse::newHttpResponse();
             //resp->setBody("Hello");
