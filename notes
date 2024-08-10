@@ -164,3 +164,7 @@ trace.json
 25. virtual keyword if specified on a class function means a derived class can override that class function
 
 26. simpleton method, one object throughout the life of the process, drogon uses this
+
+27. server side validation
+
+28. properties file for password using hashing does not modify source
