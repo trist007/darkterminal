@@ -1,11 +1,12 @@
 #include <drogon/drogon.h>
 #include <iostream>
 #include <string>
-#include <memory>
+#include <chrono>
 
 #include <unitedgas/Well.h>
 
 using namespace drogon;
+using namespace std::chrono_literals;
 
 std::string encode(std::string &data)
 {
@@ -57,7 +58,65 @@ int main()
     // sent to Drogon
     app().registerHandler(
         "/",
-        [well_ptr](const HttpRequestPtr &,
+        [](const HttpRequestPtr &req,
+           std::function<void(const HttpResponsePtr &)> &&callback) {
+            bool loggedIn =
+                req->session()->getOptional<bool>("loggedIn").value_or(false);
+            HttpResponsePtr resp;
+            if (loggedIn == false)
+                resp = HttpResponse::newHttpViewResponse("LoginPage");
+            else
+                resp = HttpResponse::newHttpViewResponse("LogoutPage");
+            callback(resp);
+        });
+
+    app().registerHandler(
+        "/logout",
+        [](const HttpRequestPtr &req,
+           std::function<void(const HttpResponsePtr &)> &&callback) {
+            HttpResponsePtr resp = HttpResponse::newHttpResponse();
+            req->session()->erase("loggedIn");
+            //resp = HttpResponse::newHttpViewResponse("LogoutPage");
+            //resp->setBody("<script>window.location.href = \"/\";</script>");
+            resp->setBody("Logged out");
+            callback(resp);
+        },
+        {Post});
+
+    app().registerHandler(
+        "/login",
+        [](const HttpRequestPtr &req,
+           std::function<void(const HttpResponsePtr &)> &&callback) {
+            HttpResponsePtr resp = HttpResponse::newHttpResponse();
+            std::string user = req->getParameter("user");
+            std::string passwd = req->getParameter("passwd");
+
+            // NOTE: Do not use MD5 for the password hash under any
+            // circumstances. We only use it because Drogon is not a
+            // cryptography library, so it does not include a better hash
+            // algorithm. Use Argon2 or BCrypt in a real product. username:
+            // user, password: password123
+            if (user == "user" && utils::getMd5("jadsjhdsajkh" + passwd) ==
+                                      "5B5299CF4CEAE2D523315694B82573C9")
+            {
+                req->session()->insert("loggedIn", true);
+                //resp->setBody("<script>window.location.href = \"localhost:8848/unitedgas\";</script>");
+                auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+                callback(resp);
+            }
+            else
+            {
+                resp->setStatusCode(k401Unauthorized);
+                //resp->setBody("<script>window.location.href = \"/\";</script>");
+                resp->setBody("403 Forbidden");
+                callback(resp);
+            }
+        },
+        {Post});
+
+    app().registerHandler(
+        "/unitedgas",
+        [well_ptr](const HttpRequestPtr &req,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
 
         if (well_ptr == nullptr)
@@ -86,10 +145,18 @@ int main()
         data["thirdCole"] = well_ptr->get_thirdCole();
         data["comments"] = well_ptr->get_comments();
 
-        auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
+        HttpResponsePtr resp;
+        bool loggedIn =
+                req->session()->getOptional<bool>("loggedIn").value_or(false);
+        if (loggedIn == false)
+            resp = HttpResponse::newRedirectionResponse("http://localhost:8848/login");
+        else
+            resp = HttpResponse::newHttpViewResponse("UnitedGasView, data");
+            resp = HttpResponse::newRedirectionResponse("http://localhost:8848/login");
+        //auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
             //auto resp = HttpResponse::newHttpResponse();
             //resp->setBody("Hello");
-            callback(resp);
+        callback(resp);
         },
         {Get});
 
@@ -234,7 +301,7 @@ int main()
         }
         //auto resp = HttpResponse::newHttpResponse();
         well_ptr->writetoFile();
-        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848");
+        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
             //auto resp = HttpResponse::newHttpResponse();
             //resp->setBody("Hello");
             callback(resp);
