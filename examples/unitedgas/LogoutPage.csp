@@ -10,7 +10,5 @@
 			<button type="submit">Logout</button>
 		</div>
 	</form> 
-
-	<p>You can logout now</p>
 </body>
 </html>

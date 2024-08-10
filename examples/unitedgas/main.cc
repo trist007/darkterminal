@@ -57,7 +57,7 @@ int main()
     // responsible for generating a HTTP response upon an HTTP request being
     // sent to Drogon
     app().registerHandler(
-        "/",
+        "/unitedgas",
         [](const HttpRequestPtr &req,
            std::function<void(const HttpResponsePtr &)> &&callback) {
             bool loggedIn =
@@ -101,21 +101,22 @@ int main()
             {
                 req->session()->insert("loggedIn", true);
                 //resp->setBody("<script>window.location.href = \"localhost:8848/unitedgas\";</script>");
-                auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+                auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
                 callback(resp);
             }
             else
             {
                 resp->setStatusCode(k401Unauthorized);
                 //resp->setBody("<script>window.location.href = \"/\";</script>");
-                resp->setBody("403 Forbidden");
+                auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+                //resp->setBody("403 Forbidden");
                 callback(resp);
             }
         },
         {Post});
 
     app().registerHandler(
-        "/unitedgas",
+        "/unitedgas/",
         [well_ptr](const HttpRequestPtr &req,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
 
@@ -149,10 +150,9 @@ int main()
         bool loggedIn =
                 req->session()->getOptional<bool>("loggedIn").value_or(false);
         if (loggedIn == false)
-            resp = HttpResponse::newRedirectionResponse("http://localhost:8848/login");
+          resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
         else
-            resp = HttpResponse::newHttpViewResponse("UnitedGasView, data");
-            resp = HttpResponse::newRedirectionResponse("http://localhost:8848/login");
+          resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
         //auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
             //auto resp = HttpResponse::newHttpResponse();
             //resp->setBody("Hello");
@@ -177,131 +177,131 @@ int main()
         {
             data = req->getParameter("dailyOil");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_dailyOil(encoded_data);
         }
         if (!req->getParameter("dailyWater").empty())
         {
             data = req->getParameter("dailyWater");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_dailyWater(encoded_data);
         }
         if(!req->getParameter("dailyGas").empty())
         {
             data = req->getParameter("dailyGas");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_dailyGas(encoded_data);
         }
         if(!req->getParameter("opPressureTubing").empty())
         {
             data = req->getParameter("opPressureTubing");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_opPressureTubing(encoded_data);
         }
         if(!req->getParameter("opPressureCasing").empty())
         {
             data = req->getParameter("opPressureCasing");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_opPressureCasing(encoded_data);
         }
         if(!req->getParameter("strokesPerMin").empty())
         {
             data = req->getParameter("strokesPerMin");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_strokesPerMin(encoded_data);
         }
         if(!req->getParameter("strokeLength").empty())
         {
             data = req->getParameter("strokeLength");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_strokeLength(encoded_data);
         }
         if(!req->getParameter("motorHp").empty())
         {
             data = req->getParameter("motorHp");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_motorHp(encoded_data);
         }
         if(!req->getParameter("pumpingRatio").empty())
         {
             data = req->getParameter("pumpingRatio");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_pumpingRatio(encoded_data);
         }
         if(!req->getParameter("unitGearRatio").empty())
         {
             data = req->getParameter("unitGearRatio");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_unitGearRatio(encoded_data);
         }
         if(!req->getParameter("wellname").empty())
         {
             data = req->getParameter("wellname");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_wellname(encoded_data);
         }
         if(!req->getParameter("dateOfRecentTest").empty())
         {
             data = req->getParameter("dateOfRecentTest");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_dateOfRecentTest(encoded_data);
         }
         if(!req->getParameter("pumpingUnitSize").empty())
         {
             data = req->getParameter("pumpingUnitSize");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_pumpingUnitSize(encoded_data);
         }
         if(!req->getParameter("casingSize").empty())
         {
             data = req->getParameter("casingSize");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_casingSize(encoded_data);
         }
         if(!req->getParameter("depth").empty())
         {
             data = req->getParameter("depth");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_depth(encoded_data);
         }
         if(!req->getParameter("tubingSize").empty())
         {
             data = req->getParameter("tubingSize");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_tubingSize(encoded_data);
         }
         if(!req->getParameter("pumpSize").empty())
         {
             data = req->getParameter("pumpSize");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_pumpSize(encoded_data);
         }
         if(!req->getParameter("firstCole").empty())
         {
             data = req->getParameter("firstCole");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_firstCole(encoded_data);
         }
         if(!req->getParameter("secondCole").empty())
         {
             data = req->getParameter("secondCole");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_secondCole(encoded_data);
         }
         if(!req->getParameter("thirdCole").empty())
         {
             data = req->getParameter("thirdCole");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_thirdCole(encoded_data);
         }
         if(!req->getParameter("comments").empty())
         {
             data = req->getParameter("comments");
             encoded_data = encode(data);
-            well_ptr->set_wellno(encoded_data);
+            well_ptr->set_comments(encoded_data);
         }
         //auto resp = HttpResponse::newHttpResponse();
         well_ptr->writetoFile();
-        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
             //auto resp = HttpResponse::newHttpResponse();
             //resp->setBody("Hello");
             callback(resp);
@@ -309,49 +309,6 @@ int main()
         {Post});
     // `registerHandler()` also supports parsing and passing the path as
 
-   // parameters to the handler. Parameters are specified using {}. The text
-    // inside the {} does not correspond to the index of parameter passed to the
-    // handler (nor it has any meaning). Instead, it is only to make it easier
-    // for users to recognize the function of each parameter.
-    app().registerHandler(
-        "/user/{user-name}",
-        [](const HttpRequestPtr &,
-           std::function<void(const HttpResponsePtr &)> &&callback,
-           const std::string &name) {
-            auto resp = HttpResponse::newHttpResponse();
-            resp->setBody("Hello, " + name + "!");
-            callback(resp);
-        },
-        {Get});
-
-    // You can also specify that the parameter is in the query section of the
-    // URL!
-    app().registerHandler(
-        "/hello?user={user-name}",
-        [](const HttpRequestPtr &,
-           std::function<void(const HttpResponsePtr &)> &&callback,
-           const std::string &name) {
-            auto resp = HttpResponse::newHttpResponse();
-            resp->setBody("Hello, " + name + "!");
-            callback(resp);
-        },
-        {Get});
-
-    // Or, if you want to, instead of asking drogon to parse it for you. You can
-    // parse the request yourselves.
-    app().registerHandler(
-        "/hello_user",
-        [](const HttpRequestPtr &req,
-           std::function<void(const HttpResponsePtr &)> &&callback) {
-            auto resp = HttpResponse::newHttpResponse();
-            auto name = req->getOptionalParameter<std::string>("user");
-            if (!name)
-                resp->setBody("Please tell me your name");
-            else
-                resp->setBody("Hello, " + name.value() + "!");
-            callback(resp);
-        },
-        {Get});
 
     // Ask Drogon to listen on 127.0.0.1 port 8848. Drogon supports listening
     // on multiple IP addresses by adding multiple listeners. For example, if

@@ -16,7 +16,5 @@
 			<button type="submit">Login</button>
 		</div>
 	</form> 
-
-	<p>Please login with the credentials <br>Username: user<br>Password: password123</p>
 </body>
 </html>
