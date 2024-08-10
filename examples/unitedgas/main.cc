@@ -107,47 +107,131 @@ int main()
             well_ptr->set_wellno(encoded_data);
         }
         if (!req->getParameter("dailyOil").empty())
-          well_ptr->set_dailyOil(req->getParameter("dailyOil"));
+        {
+            data = req->getParameter("dailyOil");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if (!req->getParameter("dailyWater").empty())
-          well_ptr->set_dailyWater(req->getParameter("dailyWater"));
+        {
+            data = req->getParameter("dailyWater");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("dailyGas").empty())
-          well_ptr->set_dailyGas(req->getParameter("dailyGas"));
+        {
+            data = req->getParameter("dailyGas");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("opPressureTubing").empty())
-          well_ptr->set_opPressureTubing(req->getParameter("opPressureTubing"));
+        {
+            data = req->getParameter("opPressureTubing");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("opPressureCasing").empty())
-          well_ptr->set_opPressureCasing(req->getParameter("opPressureCasing"));
+        {
+            data = req->getParameter("opPressureCasing");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("strokesPerMin").empty())
-          well_ptr->set_strokesPerMin(req->getParameter("strokesPerMin"));
+        {
+            data = req->getParameter("strokesPerMin");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("strokeLength").empty())
-          well_ptr->set_strokeLength(req->getParameter("strokeLength"));
+        {
+            data = req->getParameter("strokeLength");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("motorHp").empty())
-          well_ptr->set_motorHp(req->getParameter("motorHp"));
+        {
+            data = req->getParameter("motorHp");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("pumpingRatio").empty())
-          well_ptr->set_pumpingRatio(req->getParameter("pumpingRatio"));
+        {
+            data = req->getParameter("pumpingRatio");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("unitGearRatio").empty())
-          well_ptr->set_unitGearRatio(req->getParameter("unitGearRatio"));
+        {
+            data = req->getParameter("unitGearRatio");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("wellname").empty())
-          well_ptr->set_wellname(req->getParameter("wellname"));
+        {
+            data = req->getParameter("wellname");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("dateOfRecentTest").empty())
-          well_ptr->set_dateOfRecentTest(req->getParameter("dateOfRecentTest"));
+        {
+            data = req->getParameter("dateOfRecentTest");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("pumpingUnitSize").empty())
-          well_ptr->set_pumpingUnitSize(req->getParameter("pumpingUnitSize"));
+        {
+            data = req->getParameter("pumpingUnitSize");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("casingSize").empty())
-          well_ptr->set_casingSize(req->getParameter("casingSize"));
+        {
+            data = req->getParameter("casingSize");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("depth").empty())
-          well_ptr->set_depth(req->getParameter("depth"));
+        {
+            data = req->getParameter("depth");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("tubingSize").empty())
-          well_ptr->set_tubingSize(req->getParameter("tubingSize"));
+        {
+            data = req->getParameter("tubingSize");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("pumpSize").empty())
-          well_ptr->set_pumpSize(req->getParameter("pumpSize"));
+        {
+            data = req->getParameter("pumpSize");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("firstCole").empty())
-          well_ptr->set_firstCole(req->getParameter("firstCole"));
+        {
+            data = req->getParameter("firstCole");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("secondCole").empty())
-          well_ptr->set_secondCole(req->getParameter("secondCole"));
+        {
+            data = req->getParameter("secondCole");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("thirdCole").empty())
-          well_ptr->set_thirdCole(req->getParameter("thirdCole"));
+        {
+            data = req->getParameter("thirdCole");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         if(!req->getParameter("comments").empty())
-          well_ptr->set_comments(req->getParameter("comments"));
+        {
+            data = req->getParameter("comments");
+            encoded_data = encode(data);
+            well_ptr->set_wellno(encoded_data);
+        }
         //auto resp = HttpResponse::newHttpResponse();
         well_ptr->writetoFile();
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848");
