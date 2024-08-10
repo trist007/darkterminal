@@ -1,32 +1,24 @@
 #include <drogon/drogon.h>
+#include <iostream>
+#include <string>
+#include <memory>
 
 #include <unitedgas/Well.h>
+
 using namespace drogon;
 
 int main()
 {
-    std::shared_ptr<Well> well_ptr = std::make_shared<Well>("2",
-                    "1",
-                    "295",
-                    "0",
-                    "0",
-                    "0",
-                    "10",
-                    "48",
-                    "20",
-                    "0",
-                    "0",
-                    "Number 2",
-                    "8/10/2016",
-                    "National 67B",
-                    std::string(),
-                    "1710??",
-                    "2 7/8",
-                    "2 3/4",
-                    "1697 - 1701",
-                    std::string(),
-                    std::string(),
-                    "Packer @600'");
+//    std::shared_ptr<Well> well_ptr;
+Well *well_ptr;
+    try
+    {
+        well_ptr = new Well("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db");
+    }
+    catch (std::bad_alloc& ba)
+    {
+        std::cout << "unable to allocate memory" << std::endl;
+    }
     // `registerHandler()` adds a handler to the desired path. The handler is
     // responsible for generating a HTTP response upon an HTTP request being
     // sent to Drogon
@@ -35,6 +27,8 @@ int main()
         [well_ptr](const HttpRequestPtr &,
                   std::function<void(const HttpResponsePtr &)> &&callback) {
 
+        if (well_ptr == nullptr)
+            std::cout << "well_ptr is NULL" << std::endl;
         HttpViewData data;
         data["wellno"] = well_ptr->get_wellno();
         data["dailyOil"] = well_ptr->get_dailyOil();

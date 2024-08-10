@@ -168,3 +168,32 @@ trace.json
 27. server side validation
 
 28. properties file for password using hashing does not modify source
+
+29. file operations
+#include <fstream>
+
+writing to file
+ofstream myfile;
+
+reading from file
+ifstream myfile;
+
+myfile.open("test.txt");
+
+std::string mystring;
+std::string line;
+
+while(std::getline(myfile, line))
+  mystring += line + "\n";
+
+myfile.close();
+
+30. learn most common interview questions for software development
+project euler
+
+31. set standard in cmake
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_BUILD_TYPE debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
