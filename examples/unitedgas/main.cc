@@ -83,7 +83,7 @@ int main() {
     "/login",
     [](const HttpRequestPtr &req,
        std::function<void(const HttpResponsePtr &)> &&callback) {
-      HttpResponsePtr resp = HttpResponse::newHttpResponse();
+      
       std::string user = req->getParameter("user");
       std::string passwd = req->getParameter("passwd");
       std::string hash;
@@ -99,7 +99,6 @@ int main() {
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
         callback(resp);
       } else {
-        resp->setStatusCode(k401Unauthorized);
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
         callback(resp);
       }
