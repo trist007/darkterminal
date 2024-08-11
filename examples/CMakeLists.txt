@@ -13,7 +13,7 @@ add_executable(helloworld helloworld/main.cc
 drogon_create_views(helloworld
                     ${CMAKE_CURRENT_SOURCE_DIR}/helloworld
                     ${CMAKE_CURRENT_BINARY_DIR})
-add_executable(unitedgas unitedgas/main.cc)
+add_executable(unitedgas unitedgas/main.cc unitedgas/Well.cc)
 drogon_create_views(unitedgas
         ${CMAKE_CURRENT_SOURCE_DIR}/unitedgas
         ${CMAKE_CURRENT_BINARY_DIR})
