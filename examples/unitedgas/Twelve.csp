@@ -156,11 +156,18 @@
       <%c++ $$<<comments; %>
       <input type="text" id="comments" name="comments">
   </form>
+  
+<form action="/unitedgas/" method="get">
+<div class="container">
+</div>
+<button type="submit">Home</button>
+</form>
 
 <form action="/logout" method="post">
 <div class="container">
 </div>
 <button type="submit">Logout</button>
 </form>
+
 </body>
 </html>
