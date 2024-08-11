@@ -1,9 +1,11 @@
 #include <drogon/drogon.h>
+#include <drogon/utils/Utilities.h>
 #include <iostream>
 #include <string>
 #include <chrono>
 
 #include <unitedgas/Well.h>
+#include <trantor/utils/crypto/sha256.h>
 
 using namespace drogon;
 using namespace std::chrono_literals;
@@ -90,14 +92,21 @@ int main()
             HttpResponsePtr resp = HttpResponse::newHttpResponse();
             std::string user = req->getParameter("user");
             std::string passwd = req->getParameter("passwd");
+            //trantor::utils::Hash256 hash;
+            //trantor::utils::Hash256 hash;
+            std::string hash;
 
             // NOTE: Do not use MD5 for the password hash under any
             // circumstances. We only use it because Drogon is not a
             // cryptography library, so it does not include a better hash
             // algorithm. Use Argon2 or BCrypt in a real product. username:
             // user, password: password123
-            if (user == "user" && utils::getMd5("jadsjhdsajkh" + passwd) ==
-                                      "5B5299CF4CEAE2D523315694B82573C9")
+            /*
+            if (user == "user" && trantor::utils::sha256("jadsjhdsajkh" + passwd) ==
+                                      "227cf1f3a63637b746cb3223925c6ddf733213a174571b7ad128688ebed5782e")
+                                      */
+            hash = utils::getSha256(passwd);
+            if (hash == "1C1F1024D78CBFA8DF28545FA462D9FA461D0D6874A2B5E2FCC7214D6C78B9BA")
             {
                 req->session()->insert("loggedIn", true);
                 //resp->setBody("<script>window.location.href = \"localhost:8848/unitedgas\";</script>");
