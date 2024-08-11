@@ -41,17 +41,13 @@ std::string encode(std::string &data) {
         break;
     }
   }
-  // data.swap(buffer);
   return buffer;
 }
 
 int main() {
   std::shared_ptr<Well> well_ptr;
-  std::string filename = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\12.db";
-  //Well *well_ptr;
   try {
     well_ptr = std::make_shared<Well>(filename);
-    //well_ptr = new Well("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db");
   } catch (std::bad_alloc &ba) {
     std::cout << "unable to allocate memory" << std::endl;
   }
@@ -78,8 +74,6 @@ int main() {
        std::function<void(const HttpResponsePtr &)> &&callback) {
       HttpResponsePtr resp = HttpResponse::newHttpResponse();
       req->session()->erase("loggedIn");
-      //resp = HttpResponse::newHttpViewResponse("LogoutPage");
-      //resp->setBody("<script>window.location.href = \"/\";</script>");
       resp->setBody("Logged out");
       callback(resp);
     },
@@ -102,14 +96,11 @@ int main() {
       hash = utils::getSha256(passwd);
       if (hash == "1C1F1024D78CBFA8DF28545FA462D9FA461D0D6874A2B5E2FCC7214D6C78B9BA") {
         req->session()->insert("loggedIn", true);
-        //resp->setBody("<script>window.location.href = \"localhost:8848/unitedgas\";</script>");
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
         callback(resp);
       } else {
         resp->setStatusCode(k401Unauthorized);
-        //resp->setBody("<script>window.location.href = \"/\";</script>");
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
-        //resp->setBody("403 Forbidden");
         callback(resp);
       }
     },
@@ -121,7 +112,9 @@ int main() {
                std::function<void(const HttpResponsePtr &)> &&callback) {
       if (well_ptr == nullptr)
         std::cout << "well_ptr is NULL" << std::endl;
+      
       HttpViewData data;
+      
       data["wellno"] = well_ptr->get_wellno();
       data["dailyOil"] = well_ptr->get_dailyOil();
       data["dailyWater"] = well_ptr->get_dailyWater();
@@ -152,9 +145,6 @@ int main() {
         resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
-      //auto resp = HttpResponse::newHttpViewResponse("UnitedGasView", data);
-      //auto resp = HttpResponse::newHttpResponse();
-      //resp->setBody("Hello");
       callback(resp);
     },
     {Get});
@@ -275,15 +265,11 @@ int main() {
         encoded_data = encode(data);
         well_ptr->set_comments(encoded_data);
       }
-      //auto resp = HttpResponse::newHttpResponse();
       well_ptr->writetoFile();
       auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
-      //auto resp = HttpResponse::newHttpResponse();
-      //resp->setBody("Hello");
       callback(resp);
     },
     {Post});
-  // `registerHandler()` also supports parsing and passing the path as
 
 
   // Ask Drogon to listen on 127.0.0.1 port 8848. Drogon supports listening
