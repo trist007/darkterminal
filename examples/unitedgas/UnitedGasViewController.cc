@@ -7,7 +7,7 @@ using namespace drogon;
 // Instead, it has one handler - asyncHandleHttpRequest. The
 // HttpSimpleController is a lightweight class designed to handle really simple
 // cases.
-class HelloViewController : public HttpSimpleController<HelloViewController>
+class UnitedGasViewController : public HttpSimpleController<UnitedGasViewController>
 {
   public:
     PATH_LIST_BEGIN

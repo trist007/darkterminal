@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
-
 project(drogon)
 
 message(STATUS "compiler: " ${CMAKE_CXX_COMPILER_ID})
+
 
 option(BUILD_CTL "Build drogon_ctl" ON)
 option(BUILD_EXAMPLES "Build examples" ON)
@@ -181,6 +181,11 @@ endif()
 
 
 # jsoncpp
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+else()
+    include(/Users/trist007/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+endif()
 find_package(Jsoncpp REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
 list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
