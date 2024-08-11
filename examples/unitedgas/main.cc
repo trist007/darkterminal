@@ -11,9 +11,39 @@ using namespace drogon;
 using namespace std::chrono_literals;
 
 #ifdef _MSC_VER
-  std::string filename = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\12.db";
+  std::string filename2 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\2.db";
+  std::string filename3 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\3.db";
+  std::string filename6 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\6.db";
+  std::string filename7 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\7.db";
+  std::string filename8 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\8.db";
+  std::string filename9 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\9.db";
+  std::string filename10 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\10.db";
+  std::string filename12 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\12.db";
+  std::string filename13 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\13.db";
+  std::string filename15 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\15.db";
+  std::string filename20 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\20.db";
+  std::string filename21 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\21.db";
+  std::string filename22 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\22.db";
+  std::string filename23 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\23.db";
+  std::string filename24B = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\24B.db";
+  std::string filename25 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\25.db";
 #else
-  std::string filename = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
+  std::string filename2 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/2.db";
+  std::string filename3 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/3.db";
+  std::string filename6 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/6.db";
+  std::string filename7 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/7.db";
+  std::string filename8 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/8.db";
+  std::string filename9 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/9.db";
+  std::string filename10 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/10.db";
+  std::string filename12 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
+  std::string filename13 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/13.db";
+  std::string filename15 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/15.db";
+  std::string filename20 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/20.db";
+  std::string filename21 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/21.db";
+  std::string filename22 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/22.db";
+  std::string filename23 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/23.db";
+  std::string filename24B = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/24B.db";
+  std::string filename25 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/25.db";
 #endif
 
 std::string encode(std::string &data) {
@@ -46,9 +76,9 @@ std::string encode(std::string &data) {
 
 int main() {
 
-  std::shared_ptr<Well> well_ptr;
+  std::shared_ptr<Well> well_ptr_12;
   try {
-    well_ptr = std::make_shared<Well>(filename);
+    well_ptr_12 = std::make_shared<Well>(filename12);
   } catch (std::bad_alloc &ba) {
     std::cout << "unable to allocate memory" << std::endl;
   }
@@ -125,35 +155,35 @@ int main() {
   
   app().registerHandler(
     "/unitedgas/12",
-    [well_ptr](const HttpRequestPtr &req,
+    [well_ptr_12](const HttpRequestPtr &req,
                std::function<void(const HttpResponsePtr &)> &&callback) {
       
-      if (well_ptr == nullptr)
-        std::cout << "well_ptr is NULL" << std::endl;
+      if (well_ptr_12 == nullptr)
+        std::cout << "well_ptr_12 is NULL" << std::endl;
       
       HttpViewData data;
       
-      data["wellname"] = well_ptr->get_wellname();
-      data["wellno"] = well_ptr->get_wellno();
-      data["dateOfRecentTest"] = well_ptr->get_dateOfRecentTest();
-      data["dailyOil"] = well_ptr->get_dailyOil();
-      data["dailyWater"] = well_ptr->get_dailyWater();
-      data["dailyGas"] = well_ptr->get_dailyGas();
-      data["opPressureTubing"] = well_ptr->get_opPressureTubing();
-      data["opPressureCasing"] = well_ptr->get_opPressureCasing();
-      data["pumpingUnitSize"] = well_ptr->get_pumpingUnitSize();
-      data["strokesPerMin"] = well_ptr->get_strokesPerMin();
-      data["strokeLength"] = well_ptr->get_strokeLength();
-      data["motorHp"] = well_ptr->get_motorHp();
-      data["pumpingRatio"] = well_ptr->get_pumpingRatio();
-      data["unitGearRatio"] = well_ptr->get_unitGearRatio();
-      data["casingSize"] = well_ptr->get_casingSize();
-      data["tubingSize"] = well_ptr->get_tubingSize();
-      data["pumpSize"] = well_ptr->get_pumpSize();
-      data["firstCole"] = well_ptr->get_firstCole();
-      data["secondCole"] = well_ptr->get_secondCole();
-      data["thirdCole"] = well_ptr->get_thirdCole();
-      data["comments"] = well_ptr->get_comments();
+      data["wellname"] = well_ptr_12->get_wellname();
+      data["wellno"] = well_ptr_12->get_wellno();
+      data["dateOfRecentTest"] = well_ptr_12->get_dateOfRecentTest();
+      data["dailyOil"] = well_ptr_12->get_dailyOil();
+      data["dailyWater"] = well_ptr_12->get_dailyWater();
+      data["dailyGas"] = well_ptr_12->get_dailyGas();
+      data["opPressureTubing"] = well_ptr_12->get_opPressureTubing();
+      data["opPressureCasing"] = well_ptr_12->get_opPressureCasing();
+      data["pumpingUnitSize"] = well_ptr_12->get_pumpingUnitSize();
+      data["strokesPerMin"] = well_ptr_12->get_strokesPerMin();
+      data["strokeLength"] = well_ptr_12->get_strokeLength();
+      data["motorHp"] = well_ptr_12->get_motorHp();
+      data["pumpingRatio"] = well_ptr_12->get_pumpingRatio();
+      data["unitGearRatio"] = well_ptr_12->get_unitGearRatio();
+      data["casingSize"] = well_ptr_12->get_casingSize();
+      data["tubingSize"] = well_ptr_12->get_tubingSize();
+      data["pumpSize"] = well_ptr_12->get_pumpSize();
+      data["firstCole"] = well_ptr_12->get_firstCole();
+      data["secondCole"] = well_ptr_12->get_secondCole();
+      data["thirdCole"] = well_ptr_12->get_thirdCole();
+      data["comments"] = well_ptr_12->get_comments();
 
       HttpResponsePtr resp;
       
@@ -169,119 +199,119 @@ int main() {
 
   app().registerHandler(
     "/formHandler",
-    [well_ptr](const HttpRequestPtr &req,
+    [well_ptr_12](const HttpRequestPtr &req,
                std::function<void(const HttpResponsePtr &)> &&callback) {
       
       std::string data, encoded_data;
-      if (well_ptr == nullptr)
-        std::cout << "well_ptr is NULL" << std::endl;
+      if (well_ptr_12 == nullptr)
+        std::cout << "well_ptr_12 is NULL" << std::endl;
 
       if (!req->getParameter("wellname").empty()) {
         data = req->getParameter("wellname");
         encoded_data = encode(data);
-        well_ptr->set_wellname(encoded_data);
+        well_ptr_12->set_wellname(encoded_data);
       }
       if (!req->getParameter("wellno").empty()) {
         data = req->getParameter("wellno");
         encoded_data = encode(data);
-        well_ptr->set_wellno(encoded_data);
+        well_ptr_12->set_wellno(encoded_data);
       }
       if (!req->getParameter("dateOfRecentTest").empty()) {
         data = req->getParameter("dateOfRecentTest");
         encoded_data = encode(data);
-        well_ptr->set_dateOfRecentTest(encoded_data);
+        well_ptr_12->set_dateOfRecentTest(encoded_data);
       }
       if (!req->getParameter("dailyOil").empty()) {
         data = req->getParameter("dailyOil");
         encoded_data = encode(data);
-        well_ptr->set_dailyOil(encoded_data);
+        well_ptr_12->set_dailyOil(encoded_data);
       }
       if (!req->getParameter("dailyWater").empty()) {
         data = req->getParameter("dailyWater");
         encoded_data = encode(data);
-        well_ptr->set_dailyWater(encoded_data);
+        well_ptr_12->set_dailyWater(encoded_data);
       }
       if (!req->getParameter("dailyGas").empty()) {
         data = req->getParameter("dailyGas");
         encoded_data = encode(data);
-        well_ptr->set_dailyGas(encoded_data);
+        well_ptr_12->set_dailyGas(encoded_data);
       }
       if (!req->getParameter("opPressureTubing").empty()) {
         data = req->getParameter("opPressureTubing");
         encoded_data = encode(data);
-        well_ptr->set_opPressureTubing(encoded_data);
+        well_ptr_12->set_opPressureTubing(encoded_data);
       }
       if (!req->getParameter("opPressureCasing").empty()) {
         data = req->getParameter("opPressureCasing");
         encoded_data = encode(data);
-        well_ptr->set_opPressureCasing(encoded_data);
+        well_ptr_12->set_opPressureCasing(encoded_data);
       }
       if (!req->getParameter("pumpingUnitSize").empty()) {
         data = req->getParameter("pumpingUnitSize");
         encoded_data = encode(data);
-        well_ptr->set_pumpingUnitSize(encoded_data);
+        well_ptr_12->set_pumpingUnitSize(encoded_data);
       }
       if (!req->getParameter("strokesPerMin").empty()) {
         data = req->getParameter("strokesPerMin");
         encoded_data = encode(data);
-        well_ptr->set_strokesPerMin(encoded_data);
+        well_ptr_12->set_strokesPerMin(encoded_data);
       }
       if (!req->getParameter("strokeLength").empty()) {
         data = req->getParameter("strokeLength");
         encoded_data = encode(data);
-        well_ptr->set_strokeLength(encoded_data);
+        well_ptr_12->set_strokeLength(encoded_data);
       }
       if (!req->getParameter("motorHp").empty()) {
         data = req->getParameter("motorHp");
         encoded_data = encode(data);
-        well_ptr->set_motorHp(encoded_data);
+        well_ptr_12->set_motorHp(encoded_data);
       }
       if (!req->getParameter("pumpingRatio").empty()) {
         data = req->getParameter("pumpingRatio");
         encoded_data = encode(data);
-        well_ptr->set_pumpingRatio(encoded_data);
+        well_ptr_12->set_pumpingRatio(encoded_data);
       }
       if (!req->getParameter("unitGearRatio").empty()) {
         data = req->getParameter("unitGearRatio");
         encoded_data = encode(data);
-        well_ptr->set_unitGearRatio(encoded_data);
+        well_ptr_12->set_unitGearRatio(encoded_data);
       }
       if (!req->getParameter("casingSize").empty()) {
         data = req->getParameter("casingSize");
         encoded_data = encode(data);
-        well_ptr->set_casingSize(encoded_data);
+        well_ptr_12->set_casingSize(encoded_data);
       }
       if (!req->getParameter("tubingSize").empty()) {
         data = req->getParameter("tubingSize");
         encoded_data = encode(data);
-        well_ptr->set_tubingSize(encoded_data);
+        well_ptr_12->set_tubingSize(encoded_data);
       }
       if (!req->getParameter("pumpSize").empty()) {
         data = req->getParameter("pumpSize");
         encoded_data = encode(data);
-        well_ptr->set_pumpSize(encoded_data);
+        well_ptr_12->set_pumpSize(encoded_data);
       }
       if (!req->getParameter("firstCole").empty()) {
         data = req->getParameter("firstCole");
         encoded_data = encode(data);
-        well_ptr->set_firstCole(encoded_data);
+        well_ptr_12->set_firstCole(encoded_data);
       }
       if (!req->getParameter("secondCole").empty()) {
         data = req->getParameter("secondCole");
         encoded_data = encode(data);
-        well_ptr->set_secondCole(encoded_data);
+        well_ptr_12->set_secondCole(encoded_data);
       }
       if (!req->getParameter("thirdCole").empty()) {
         data = req->getParameter("thirdCole");
         encoded_data = encode(data);
-        well_ptr->set_thirdCole(encoded_data);
+        well_ptr_12->set_thirdCole(encoded_data);
       }
       if (!req->getParameter("comments").empty()) {
         data = req->getParameter("comments");
         encoded_data = encode(data);
-        well_ptr->set_comments(encoded_data);
+        well_ptr_12->set_comments(encoded_data);
       }
-      well_ptr->writetoFile();
+      well_ptr_12->writetoFile();
       auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/12");
       callback(resp);
     },
