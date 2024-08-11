@@ -45,6 +45,7 @@ std::string encode(std::string &data) {
 }
 
 int main() {
+
   std::shared_ptr<Well> well_ptr;
   try {
     well_ptr = std::make_shared<Well>(filename);
@@ -54,6 +55,7 @@ int main() {
   // `registerHandler()` adds a handler to the desired path. The handler is
   // responsible for generating a HTTP response upon an HTTP request being
   // sent to Drogon
+  //
   app().registerHandler(
     "/unitedgas",
     [](const HttpRequestPtr &req,
