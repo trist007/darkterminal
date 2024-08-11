@@ -67,25 +67,48 @@ std::list<std::string> buildWellList() {
   return wellList;
 }
 
-std::list<std::string> buildWellFileNames() {
+std::list<std::string> unixbuildWellFileNames() {
   std::list<std::string> wellListFileNames;
 
-  wellListFileNames.push_back("filename2");
-  wellListFileNames.push_back("filename3");
-  wellListFileNames.push_back("filename6");
-  wellListFileNames.push_back("filename7");
-  wellListFileNames.push_back("filename8");
-  wellListFileNames.push_back("filename9");
-  wellListFileNames.push_back("filename10");
-  wellListFileNames.push_back("filename12");
-  wellListFileNames.push_back("filename13");
-  wellListFileNames.push_back("filename15");
-  wellListFileNames.push_back("filename20");
-  wellListFileNames.push_back("filename21");
-  wellListFileNames.push_back("filename22");
-  wellListFileNames.push_back("filename23");
-  wellListFileNames.push_back("filename24B");
-  wellListFileNames.push_back("filename25");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/2.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/3.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/6.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/7.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/8.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/9.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/10.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/12.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/13.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/15.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/20.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/21.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/22.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/23.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/24B.db");
+  wellListFileNames.push_back("/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/wells/25.db");
+
+  return wellListFileNames;
+}
+
+std::list<std::string> winbuildWellFileNames() {
+  std::list<std::string> wellListFileNames;
+
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\2.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\3.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\6.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\7.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\8.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\9.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\10.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\12.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\13.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\15.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\20.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\21.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\22.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\23.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\24B.db");
+  wellListFileNames.push_back("C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\25.db");
 
   return wellListFileNames;
 }
@@ -157,7 +180,7 @@ std::vector<std::shared_ptr<Well>> initializeWellDB()
 {
 
   std::list<std::string> wellListPointerNames = buildWellPointerNames();
-  std::list<std::string> wellListFileNames = buildWellFileNames();
+  std::list<std::string> wellListFileNames = winbuildWellFileNames();
 
   std::vector<std::string*> well_ptr_names;
   std::vector<std::string*> filenames;
