@@ -138,3 +138,5 @@ private:
       m_unitGearRatio, m_casingSize, m_tubingSize, m_pumpSize, m_firstCole, m_secondCole, m_thirdCole,
       m_comments, m_filename;
 };
+
+std::vector<std::shared_ptr<Well>> initializeWellDB();
