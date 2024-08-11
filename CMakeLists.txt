@@ -52,7 +52,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   endif()
 endif ()
 
-add_library(${PROJECT_NAME})
 if (BUILD_SHARED_LIBS)
     find_package(Threads)
     # set(BUILD_EXAMPLES FALSE)

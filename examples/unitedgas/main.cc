@@ -11,39 +11,9 @@ using namespace drogon;
 using namespace std::chrono_literals;
 
 #ifdef _MSC_VER
-  std::string filename2 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\2.db";
-  std::string filename3 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\3.db";
-  std::string filename6 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\6.db";
-  std::string filename7 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\7.db";
-  std::string filename8 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\8.db";
-  std::string filename9 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\9.db";
-  std::string filename10 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\10.db";
-  std::string filename12 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\12.db";
-  std::string filename13 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\13.db";
-  std::string filename15 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\15.db";
-  std::string filename20 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\20.db";
-  std::string filename21 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\21.db";
-  std::string filename22 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\22.db";
-  std::string filename23 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\23.db";
-  std::string filename24B = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\24B.db";
-  std::string filename25 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\25.db";
+  const std::string filename12 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\12.db";
 #else
-  std::string filename2 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/2.db";
-  std::string filename3 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/3.db";
-  std::string filename6 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/6.db";
-  std::string filename7 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/7.db";
-  std::string filename8 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/8.db";
-  std::string filename9 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/9.db";
-  std::string filename10 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/10.db";
-  std::string filename12 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
-  std::string filename13 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/13.db";
-  std::string filename15 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/15.db";
-  std::string filename20 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/20.db";
-  std::string filename21 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/21.db";
-  std::string filename22 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/22.db";
-  std::string filename23 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/23.db";
-  std::string filename24B = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/24B.db";
-  std::string filename25 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/25.db";
+  const std::string filename12 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
 #endif
 
 std::string encode(std::string &data) {
@@ -76,16 +46,21 @@ std::string encode(std::string &data) {
 
 int main() {
 
+  std::vector<std::shared_ptr<Well>> well_ptrs;
+  
+  well_ptrs = initializeWellDB();
+
+  // `registerHandler()` adds a handler to the desired path. The handler is
+  // responsible for generating a HTTP response upon an HTTP request being
+  // sent to Drogon
+  //
   std::shared_ptr<Well> well_ptr_12;
   try {
     well_ptr_12 = std::make_shared<Well>(filename12);
   } catch (std::bad_alloc &ba) {
     std::cout << "unable to allocate memory" << std::endl;
   }
-  // `registerHandler()` adds a handler to the desired path. The handler is
-  // responsible for generating a HTTP response upon an HTTP request being
-  // sent to Drogon
-  //
+  
   app().registerHandler(
     "/unitedgas",
     [](const HttpRequestPtr &req,
