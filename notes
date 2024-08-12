@@ -207,3 +207,16 @@ C:\Users\Tristan\CLionProjects\darkterminal\examples\unitedgas\12.db
 #else
     std::string filename = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
 #endif
+
+34. remote development make sure to install vcpkg on the remote host
+git clone https://github.com/microsoft/vcpkg
+sh bootstrap-vcpkg.sh
+
+and update the location of the vcpkg.cmake file on the remote host
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+else()
+    #include(/Users/trist007/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+    include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
+endif()

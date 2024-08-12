@@ -54,12 +54,14 @@ int main() {
   // responsible for generating a HTTP response upon an HTTP request being
   // sent to Drogon
   //
+  /*
   std::shared_ptr<Well> well_ptr_12;
   try {
     well_ptr_12 = std::make_shared<Well>(filename12);
   } catch (std::bad_alloc &ba) {
     std::cout << "unable to allocate memory" << std::endl;
   }
+  */
   
   app().registerHandler(
     "/unitedgas",
@@ -103,10 +105,10 @@ int main() {
       hash = utils::getSha256(passwd);
       if (hash == "1C1F1024D78CBFA8DF28545FA462D9FA461D0D6874A2B5E2FCC7214D6C78B9BA") {
         req->session()->insert("loggedIn", true);
-        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
+        auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/");
         callback(resp);
       } else {
-        auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
         callback(resp);
       }
     },
@@ -121,7 +123,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("UnitedGasView");
       callback(resp);
@@ -166,7 +168,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Twelve", data);
       callback(resp);
@@ -289,7 +291,7 @@ int main() {
       }
       well_ptrs[7]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/12");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/12");
       callback(resp);
     },
     {Post});
@@ -332,7 +334,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Two", data);
       callback(resp);
@@ -455,7 +457,7 @@ int main() {
       }
       well_ptrs[0]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/2");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/2");
       callback(resp);
     },
     {Post});
@@ -497,7 +499,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Three", data);
       callback(resp);
@@ -620,7 +622,7 @@ int main() {
       }
       well_ptrs[1]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/3");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/3");
       callback(resp);
     },
     {Post});
@@ -662,7 +664,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Six", data);
       callback(resp);
@@ -785,7 +787,7 @@ int main() {
       }
       well_ptrs[2]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/6");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/6");
       callback(resp);
     },
     {Post});
@@ -827,7 +829,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Seven", data);
       callback(resp);
@@ -950,7 +952,7 @@ int main() {
       }
       well_ptrs[3]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/7");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/7");
       callback(resp);
     },
     {Post});
@@ -992,7 +994,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Eight", data);
       callback(resp);
@@ -1115,7 +1117,7 @@ int main() {
       }
       well_ptrs[4]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/8");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/8");
       callback(resp);
     },
     {Post});
@@ -1157,7 +1159,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Nine", data);
       callback(resp);
@@ -1280,7 +1282,7 @@ int main() {
       }
       well_ptrs[5]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/9");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/9");
       callback(resp);
     },
     {Post});
@@ -1322,7 +1324,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Ten", data);
       callback(resp);
@@ -1445,7 +1447,7 @@ int main() {
       }
       well_ptrs[6]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/10");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/10");
       callback(resp);
     },
     {Post});
@@ -1487,7 +1489,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Thirteen", data);
       callback(resp);
@@ -1610,7 +1612,7 @@ int main() {
       }
       well_ptrs[8]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/13");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/13");
       callback(resp);
     },
     {Post});
@@ -1652,7 +1654,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Fifteen", data);
       callback(resp);
@@ -1775,7 +1777,7 @@ int main() {
       }
       well_ptrs[9]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/15");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/15");
       callback(resp);
     },
     {Post});
@@ -1817,7 +1819,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("Twenty", data);
       callback(resp);
@@ -1940,7 +1942,7 @@ int main() {
       }
       well_ptrs[10]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/20");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/20");
       callback(resp);
     },
     {Post});
@@ -1982,7 +1984,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("TwentyOne", data);
       callback(resp);
@@ -2105,7 +2107,7 @@ int main() {
       }
       well_ptrs[11]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/21");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/21");
       callback(resp);
     },
     {Post});
@@ -2147,7 +2149,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("TwentyTwo", data);
       callback(resp);
@@ -2270,7 +2272,7 @@ int main() {
       }
       well_ptrs[12]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/22");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/22");
       callback(resp);
     },
     {Post});
@@ -2312,7 +2314,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("TwentyThree", data);
       callback(resp);
@@ -2435,7 +2437,7 @@ int main() {
       }
       well_ptrs[13]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/23");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/23");
       callback(resp);
     },
     {Post});
@@ -2477,7 +2479,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("TwentyFourB", data);
       callback(resp);
@@ -2600,7 +2602,7 @@ int main() {
       }
       well_ptrs[14]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/24B");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/24B");
       callback(resp);
     },
     {Post});
@@ -2642,7 +2644,7 @@ int main() {
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
-        resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas");
+        resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas");
       else
         resp = HttpResponse::newHttpViewResponse("TwentyFive", data);
       callback(resp);
@@ -2765,7 +2767,7 @@ int main() {
       }
       well_ptrs[15]->writetoFile();
 
-      auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/25");
+      auto resp = HttpResponse::newRedirectionResponse("http://darkterminal.net/unitedgas/25");
       callback(resp);
     },
     {Post});
@@ -2774,9 +2776,9 @@ int main() {
   // on multiple IP addresses by adding multiple listeners. For example, if
   // you want the server also listen on 127.0.0.1 port 5555. Just add another
   // line of addListener("127.0.0.1", 5555)
-  LOG_INFO << "Server running on 127.0.0.1:8848";
+  LOG_INFO << "Server running on 0.0.0.0:80";
   app()
       .enableSession(86400)
-      .addListener("127.0.0.1", 8848)
+      .addListener("0.0.0.0", 80)
       .run();
 }
