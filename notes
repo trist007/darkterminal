@@ -237,3 +237,10 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
   include(${Z_VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake)
   #include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
 endif()
+
+37. preprocessor if msvc(windows) define this else define that
+
+#ifdef _MSC_VER
+#else
+#endif
+
