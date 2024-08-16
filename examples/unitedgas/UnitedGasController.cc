@@ -72,12 +72,22 @@ class unitedgas : public HttpController<unitedgas>
     void login(const HttpRequestPtr &req,
     std::function<void(const HttpResponsePtr &)> &&callback)
     {
+
       std::string user = req->getParameter("user");
       std::string passwd = req->getParameter("passwd");
+      std::string sal = "419d777683667fe0b811bbafd03c1fb1";
       std::string hash;
+      const char* env_variable = "cuidado";
+      char* value;
+      value = getenv(env_variable);
 
-      hash = utils::getSha256(passwd);
-      if (hash == "1C1F1024D78CBFA8DF28545FA462D9FA461D0D6874A2B5E2FCC7214D6C78B9BA") {
+      // NOTE: Do not use MD5 for the password hash under any
+      // circumstances. We only use it because Drogon is not a
+      // cryptography library, so it does not include a better hash
+      // algorithm. Use Argon2 or BCrypt in a real product.
+      //
+      hash = utils::getSha256(passwd + sal);
+      if (value == hash) {
         req->session()->insert("loggedIn", true);
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/index");
         callback(resp);

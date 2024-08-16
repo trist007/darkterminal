@@ -30,7 +30,7 @@
 <a href="/unitedgas/24B">24B</a><br>
 <a href="/unitedgas/25">25</a><br>
 
-<form action="/unitedgas/logout" method="post">
+<form action="/unitedgas/logout" method="get">
 <div class="container">
 </div>
 <button type="submit">Logout</button>
