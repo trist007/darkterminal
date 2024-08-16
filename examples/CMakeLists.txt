@@ -17,6 +17,9 @@ add_executable(unitedgas unitedgas/main.cc unitedgas/Well.cc)
 drogon_create_views(unitedgas
         ${CMAKE_CURRENT_SOURCE_DIR}/unitedgas
         ${CMAKE_CURRENT_BINARY_DIR})
+add_custom_command(TARGET unitedgas PRE_BUILD COMMAND
+        ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/*.db
+        ${CMAKE_BINARY_DIR}/examples/)
 add_executable(file_upload file_upload/file_upload.cc)
 drogon_create_views(file_upload
                     ${CMAKE_CURRENT_SOURCE_DIR}/file_upload

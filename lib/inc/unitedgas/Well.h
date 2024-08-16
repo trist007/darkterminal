@@ -14,7 +14,7 @@ public:
     std::ifstream myfile;
 
     myfile.open(filename);
-    if (!myfile) {
+    if (!myfile.is_open()) {
       throw std::runtime_error("error opening file");
     }
 

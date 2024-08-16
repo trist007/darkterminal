@@ -180,12 +180,14 @@ if(TARGET std::filesystem)
 endif()
 
 
-# jsoncpp
+# vcpkg.cmake
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
-else()
+  #include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+  include(${Z_VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
   #include(/Users/trist007/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
-  include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
+  include(${Z_VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake)
+  #include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
 endif()
 find_package(Jsoncpp REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
