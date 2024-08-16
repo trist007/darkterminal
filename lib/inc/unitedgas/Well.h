@@ -140,4 +140,5 @@ private:
       m_comments, m_filename;
 };
 
-std::vector<std::shared_ptr<Well>> initializeWellDB();
+//std::vector<std::shared_ptr<Well>> initializeWellDB();
+std::map<std::string, std::shared_ptr<Well>> initializeWellDB();
