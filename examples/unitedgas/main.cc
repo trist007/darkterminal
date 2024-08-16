@@ -10,42 +10,10 @@
 using namespace drogon;
 using namespace std::chrono_literals;
 
-#ifdef _MSC_VER
-  const std::string filename12 = "C:\\Users\\Tristan\\CLionProjects\\darkterminal\\examples\\unitedgas\\wells\\12.db";
-#else
-  const std::string filename12 = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
-#endif
-
-std::string encode(std::string &data) {
-  std::string buffer;
-  buffer.reserve(data.size());
-  for (size_t pos = 0; pos != data.size(); ++pos) {
-    switch (data[pos]) {
-      case '&':
-        buffer.append("&amp;");
-        break;
-      case '\"':
-        buffer.append("&quot;");
-        break;
-      case '\'':
-        buffer.append("&apos;");
-        break;
-      case '<':
-        buffer.append("&lt;");
-        break;
-      case '>':
-        buffer.append("&gt;");
-        break;
-      default:
-        buffer.append(&data[pos], 1);
-        break;
-    }
-  }
-  return buffer;
-}
 
 int main() {
 
+    /*
   //std::vector<std::shared_ptr<Well>> well_ptrs;
   std::map<std::string, std::shared_ptr<Well>> wellListMap;
 
@@ -65,8 +33,7 @@ int main() {
   } catch (std::bad_alloc &ba) {
     std::cout << "unable to allocate memory" << std::endl;
   }
-  */
-  
+
   app().registerHandler(
     "/unitedgas",
     [](const HttpRequestPtr &req,
@@ -96,7 +63,7 @@ int main() {
     "/login",
     [](const HttpRequestPtr &req,
        std::function<void(const HttpResponsePtr &)> &&callback) {
-      
+
       std::string user = req->getParameter("user");
       std::string passwd = req->getParameter("passwd");
       std::string hash;
@@ -122,7 +89,7 @@ int main() {
     "/unitedgas/",
     [](const HttpRequestPtr &req,
                std::function<void(const HttpResponsePtr &)> &&callback) {
-      
+
       HttpResponsePtr resp;
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
@@ -133,7 +100,7 @@ int main() {
       callback(resp);
     },
     {Get});
-  
+
   // original well
   app().registerHandler(
     "/unitedgas/.*([0-9]*")
@@ -143,7 +110,6 @@ int main() {
         /*
           if (wellListMap["12"] == nullptr)
             std::cout << "wellListMap[\"12\"] is NULL" << std::endl;
-            */
 
      auto it = wellListMap.find(well_name);
         /*
@@ -152,9 +118,8 @@ int main() {
      data["wellname"] = it->second->get_wellname();
      // rest of your code
      }
-     */
       HttpViewData data;
-      
+
       data["wellname"] = it->second->get_wellname();
       data["wellno"] = it->second->get_wellno();
       data["dateOfRecentTest"] = it->second->get_dateOfRecentTest();
@@ -178,7 +143,7 @@ int main() {
       data["comments"] = it->second->get_comments();
 
       HttpResponsePtr resp;
-      
+
       bool loggedIn =
           req->session()->getOptional<bool>("loggedIn").value_or(false);
       if (loggedIn == false)
@@ -193,14 +158,13 @@ int main() {
     "/formHandler/.*([0-9]*")
     [well_name, wellListMap](const HttpRequestPtr &req,
                std::function<void(const HttpResponsePtr &)> &&callback) {
-      
+
       std::string data, encoded_data;
 
       auto it = wellListMap.find(well_name);
         /*
       if (wellListMap[well_name] == nullptr)
         std::cout << "wellListMap[7] is NULL" << std::endl;
-        */
 
       if (!req->getParameter("wellname").empty()) {
         data = req->getParameter("wellname");
@@ -314,6 +278,7 @@ int main() {
     },
     {Post});
 
+*/
   // Ask Drogon to listen on 127.0.0.1 port 8848. Drogon supports listening
   // on multiple IP addresses by adding multiple listeners. For example, if
   // you want the server also listen on 127.0.0.1 port 5555. Just add another
