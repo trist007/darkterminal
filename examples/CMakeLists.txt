@@ -18,7 +18,24 @@ drogon_create_views(unitedgas
         ${CMAKE_CURRENT_SOURCE_DIR}/unitedgas
         ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(TARGET unitedgas PRE_BUILD COMMAND
-        ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/*.db
+        ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/9.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/8.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/7.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/6.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/3.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/25.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/24B.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/23.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/22.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/21.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/20.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/2.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/15.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/13.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/12.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/11.db
+        ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/10.db
         ${CMAKE_BINARY_DIR}/examples/)
 add_executable(file_upload file_upload/file_upload.cc)
 drogon_create_views(file_upload
