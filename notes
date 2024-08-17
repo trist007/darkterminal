@@ -207,3 +207,40 @@ C:\Users\Tristan\CLionProjects\darkterminal\examples\unitedgas\12.db
 #else
     std::string filename = "/Users/trist007/CLionProjects/darkterminal/examples/unitedgas/12.db";
 #endif
+
+34. remote development make sure to install vcpkg on the remote host
+git clone https://github.com/microsoft/vcpkg
+sh bootstrap-vcpkg.sh
+
+and update the location of the vcpkg.cmake file on the remote host
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+else()
+    #include(/Users/trist007/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+    include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
+endif()
+
+35. custom command for cmake to copy db files into build directory
+add_custom_command(TARGET unitedgas PRE_BUILD COMMAND
+        ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/examples/unitedgas/wells/*.db
+        ${CMAKE_BINARY_DIR}/examples/)
+use relative paths and just use filesnames so you don't have to worry about windows \\ or unix /
+
+36. make sure to use vcpkg root by using ${Z_VCPKG_ROOT_DIR}
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  #include(C:/Users/Tristan/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+  include(${Z_VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
+  #include(/Users/trist007/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
+  include(${Z_VCPKG_ROOT_DIR}/scripts/buildsystems/vcpkg.cmake)
+  #include(/home/trist007/dev/vcpkg/scripts/buildsystems/vcpkg.cmake)
+endif()
+
+37. preprocessor if msvc(windows) define this else define that
+
+#ifdef _MSC_VER
+#else
+#endif
+

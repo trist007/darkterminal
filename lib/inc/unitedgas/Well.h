@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <memory>
 
 
 class Well {
@@ -13,7 +14,7 @@ public:
     std::ifstream myfile;
 
     myfile.open(filename);
-    if (!myfile) {
+    if (!myfile.is_open()) {
       throw std::runtime_error("error opening file");
     }
 
@@ -139,4 +140,5 @@ private:
       m_comments, m_filename;
 };
 
-std::vector<std::shared_ptr<Well>> initializeWellDB();
+//std::vector<std::shared_ptr<Well>> initializeWellDB();
+std::map<std::string, std::shared_ptr<Well>> initializeWellDB();
