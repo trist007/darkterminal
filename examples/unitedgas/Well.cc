@@ -62,37 +62,17 @@ std::map<std::string, std::shared_ptr<Well>> initializeWellDB()
 
   std::list<std::string> wellList = buildWellList();
   std::list<std::string> wellListFileNames = buildWellFileNames();
+
   std::map<std::string, std::shared_ptr<Well>> wellListMap;
 
   std::vector<std::string*> filenames;
-  std::vector<std::shared_ptr<Well>> well_ptrs;
 
   // building a vector of filenames
   for (auto& filename : wellListFileNames)
     filenames.push_back(&filename);
 
-  // building a vector of pointer names
-    /*
-  for (auto& well_ptr : wellListPointerNames)
-    well_ptr_names.push_back(&well_ptr);
-    */
-
-
   for (auto& well : wellList)
     wellListMap[well] = std::make_shared<Well>(well + ".db");
 
-  // initializing pointers
-  //for (auto it1 = well_ptr_names.begin(), it2 = filenames.begin(); it1 != well_ptr_names.end(); ++it1, ++it2)
-  //  well_ptrs.push_back(*it1 = std::make_shared<Well>(*it2));
-  for(auto& filename : filenames)
-    well_ptrs.push_back(std::make_shared<Well>(*filename));
-
-
-  //well_ptr_13 = std::make_shared<Well>(filename13);
-
-  //for (std::size_t i = 0; i < well_ptrs.size()p ++i)k
-  //  std::cout << well_ptrs->wellname
-
-  //return well_ptrs;
   return wellListMap;
 }

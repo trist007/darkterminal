@@ -50,7 +50,6 @@ class unitedgas : public HttpController<unitedgas>
     METHOD_ADD(unitedgas::login, "/login", Post);
     METHOD_ADD(unitedgas::logout, "/logout", Get);
     METHOD_ADD(unitedgas::index, "/index", Get);
-    //METHOD_ADD(unitedgas::view, "/unitedgas/.*([0-9]*)", Get);
     METHOD_ADD(unitedgas::view, "/{1}", Get);
     METHOD_ADD(unitedgas::modify, "/{1}", Post);
     METHOD_LIST_END
@@ -124,17 +123,10 @@ class unitedgas : public HttpController<unitedgas>
                         std::string well)
     {
      if (wellListMap[well] == nullptr)
-        std::cout << "wellListMap[\"12\"] is NULL" << std::endl;
+        std::cerr << "wellListMap[\"well\"] is NULL" << std::endl;
 
      auto it = wellListMap.find(well);
 
-     /*
-     if (it != wellListMap.end())
-     {
-     data["wellname"] = it->second->get_wellname();
-     // rest of your code
-     }
-     */
       HttpViewData data;
 
       data["wellname"] = it->second->get_wellname();
@@ -175,6 +167,9 @@ class unitedgas : public HttpController<unitedgas>
     std::function<void(const HttpResponsePtr &)> &&callback,
                         std::string well)
     {
+      if (wellListMap[well] == nullptr)
+        std::cerr << "wellListMap[\"well\"] is NULL" << std::endl;
+
       std::string data, encoded_data;
 
       auto it = wellListMap.find(well);
