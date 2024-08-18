@@ -2,3 +2,8 @@
 	path = trantor
 	url = https://github.com/an-tao/trantor.git
 	branch = master
+	
+[submodule "DOMPurify"]
+	path = DOMPurify
+	url = https://github.com/cure53/DOMpurify.git
+	branch = master
