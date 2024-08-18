@@ -93,6 +93,8 @@ class unitedgas : public HttpController<unitedgas>
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/index");
         callback(resp);
       } else {
+        auto clientIP = req->getPeerAddr();
+        LOG_INFO << "Authentication failed from " << clientIP.toIp();
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
         callback(resp);
       }
