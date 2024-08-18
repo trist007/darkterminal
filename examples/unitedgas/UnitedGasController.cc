@@ -79,6 +79,8 @@ class unitedgas : public HttpController<unitedgas>
       const char* env_variable = "cuidado";
       char* value;
       value = getenv(env_variable);
+      if (value == nullptr)
+        throw std::runtime_error("wellListMap[well] is NULL");
 
       // NOTE: Do not use MD5 for the password hash under any
       // circumstances. We only use it because Drogon is not a
@@ -123,7 +125,7 @@ class unitedgas : public HttpController<unitedgas>
                         std::string well)
     {
      if (wellListMap[well] == nullptr)
-        std::cerr << "wellListMap[\"well\"] is NULL" << std::endl;
+      throw std::runtime_error("wellListMap[well] is NULL");
 
      auto it = wellListMap.find(well);
 
@@ -168,14 +170,11 @@ class unitedgas : public HttpController<unitedgas>
                         std::string well)
     {
       if (wellListMap[well] == nullptr)
-        std::cerr << "wellListMap[\"well\"] is NULL" << std::endl;
+        throw std::runtime_error("wellListMap[well] is NULL");
 
       std::string data, encoded_data;
 
       auto it = wellListMap.find(well);
-
-      if (wellListMap[well] == nullptr)
-        std::cout << "wellListMap[7] is NULL" << std::endl;
 
       if (!req->getParameter("wellname").empty()) {
         data = req->getParameter("wellname");
