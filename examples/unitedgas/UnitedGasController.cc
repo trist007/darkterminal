@@ -71,7 +71,6 @@ class unitedgas : public HttpController<unitedgas>
     void login(const HttpRequestPtr &req,
     std::function<void(const HttpResponsePtr &)> &&callback)
     {
-
       std::string user = req->getParameter("user");
       std::string passwd = req->getParameter("passwd");
       std::string sal = "419d777683667fe0b811bbafd03c1fb1";
@@ -94,7 +93,7 @@ class unitedgas : public HttpController<unitedgas>
         callback(resp);
       } else {
         auto clientIP = req->getPeerAddr();
-        LOG_INFO << "Authentication failed from " << clientIP.toIp();
+        LOG_WARN << "Authentication failed from " << clientIP.toIp();
         auto resp = HttpResponse::newRedirectionResponse("http://localhost:8848/unitedgas/");
         callback(resp);
       }
