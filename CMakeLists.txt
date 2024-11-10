@@ -9,7 +9,7 @@ option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(BUILD_C-ARES "Build C-ARES" ON)
 option(BUILD_TESTING "Build tests" OFF)
 option(BUILD_SHARED_LIBS "Build trantor as a shared lib" OFF)
-option(TRANTOR_USE_TLS "Enable TLS" ON)
+option(TRANTOR_USE_TLS "Enable TLS" "")
 option(USE_SPDLOG "Allow using the spdlog logging library" OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules/)
