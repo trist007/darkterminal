@@ -25,6 +25,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <array>
 
 #define MAX_CONNECTIONS 10
 
@@ -72,7 +73,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      *
      */
 
-    int m_max_conn;
+    static const int m_max_conn = MAX_CONNECTIONS;
 
     /**
      * @brief Struct for Users
@@ -84,22 +85,47 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
             tcp_ptr(nullptr),
             username(user),
             connected(false) {}
-            
+
         User() :
             tcp_ptr(nullptr),
-            username{"anon"}, 
+            username("anon"),
             connected(false) {}
 
         TcpConnectionPtr tcp_ptr;
         std::string username;
         bool connected;
-    } user;
+    };
 
     /**
      * @brief Array to hold User info
      *
      */
-    std::array<User, MAX_CONNECTIONS> m_user_array;
+    std::array<User, m_max_conn> m_user_array;
+
+    /**
+     * @brief Kick user off
+     *
+     */
+    void kickUser(std::string user);
+
+    /**
+     * @brief Parse input forth the command shell
+     *
+     */
+    void parseCommand(std::string input);
+
+    /**
+     * @brief Start the Command thread
+     *
+     */
+    void startCommand();
+    std::thread c1;
+
+    /**
+     * @brief Command Shell
+     *
+     */
+    void Command();
 
     /**
      * @brief Add user
