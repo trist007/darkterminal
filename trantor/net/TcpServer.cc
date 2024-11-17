@@ -12,6 +12,7 @@
  *
  */
 
+#pragma once
 #include <trantor/net/TcpServer.h>
 #include <trantor/utils/Logger.h>
 #include <functional>
