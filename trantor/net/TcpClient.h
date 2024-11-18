@@ -84,13 +84,13 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
      * @brief Start UserInput thread
      *
      */
-    void startUserInput(const TcpConnectionPtr &conn);
+    void startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer);
 
     /**
      * @brief UserInput thread for chat
      *
      */
-    void UserInput(const TcpConnectionPtr &conn);
+    void UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer);
 
     /**
      * @brief Start Authentication

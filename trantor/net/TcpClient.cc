@@ -191,16 +191,16 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-void TcpClient::startUserInput(const TcpConnectionPtr &conn)
+void TcpClient::startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
-    auto func = std::bind(&TcpClient::UserInput, this, _1);
+    auto func = std::bind(&TcpClient::UserInput, this, _1, _2);
     //t1 = std::thread(func);
 
     if(t1.joinable())
     {
         t1.join();
     }        
-    t1 = std::thread(func, conn);
+    t1 = std::thread(func, conn, buffer);
 }
 
 void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
@@ -209,20 +209,33 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
     std::string user, pass;
     std::string input;
 
-    std::cout << "Login" << std::endl;
-    std::cout << "user: ";
-    std::cin >> user;
-    std::cout << "pass: ";
-    std::cin >> pass;
+    while (this->m_user.authenticated == false)
+    {
 
-    conn->send("/login " + user + " " + pass);
-    input = std::string(buffer->peek(), buffer->readableBytes());
-    if (input == "success trist007")
-        std::cout << "you are authenticated" << std::endl;
+        std::cout << "Login" << std::endl;
+        std::cout << "user: ";
+        std::cin >> user;
+        std::cout << "pass: ";
+        std::cin >> pass;
+
+        conn->send("/login " + user + " " + pass);
+        buffer->retrieveAll();
+        input = std::string(buffer->peek(), buffer->readableBytes());
+        std::cout << "auth response " << input << std::endl;
+        if (input == "success " + user)
+        {
+            std::cout << "you are authenticated" << std::endl;
+            this->m_user.authenticated = true;
+        }
+        else
+        {
+            std::cerr << "Failed login, try again" << std::endl;
+        }
+    }
     
 }
 
-void TcpClient::UserInput(const TcpConnectionPtr &conn)
+void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
     //TcpConnectionPtr conn = this->connection();
     std::string userInput;
@@ -239,6 +252,11 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
     else
     {
         std::cout << "ParseInput: conn is good" << std::endl;
+    }
+
+    if (this->m_user.authenticated == false)
+    {
+        Authenticate(conn, buffer);
     }
 
     while(userInput != "/quit")

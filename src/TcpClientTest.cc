@@ -68,11 +68,7 @@ int main()
             });
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
-            while (client->m_user.authenticated == false)
-            {
-                client->Authenticate(conn, buf);
-            }
-            client->startUserInput(conn);
+            client->startUserInput(conn, buf);
             std::cout << std::string(buf->peek(), buf->readableBytes());
             //LOG_DEBUG << std::string(buf->peek(), buf->readableBytes());
             buf->retrieveAll();
