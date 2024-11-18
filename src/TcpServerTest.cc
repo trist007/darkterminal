@@ -56,6 +56,7 @@ int main()
         {
             LOG_DEBUG << "New connection";
             server.AddUser(connPtr);
+            connPtr->send("welcome");
         }
         else if (connPtr->disconnected())
         {

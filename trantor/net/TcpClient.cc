@@ -203,11 +203,11 @@ void TcpClient::startUserInput(const TcpConnectionPtr &conn)
     t1 = std::thread(func, conn);
 }
 
-void TcpClient::Authenticate(const TcpConnectionPtr &conn)
+void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
-    //MsgBuffer *buffer;
     std::string response;
     std::string user, pass;
+    std::string input;
 
     std::cout << "Login" << std::endl;
     std::cout << "user: ";
@@ -216,19 +216,15 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
     std::cin >> pass;
 
     conn->send("/login " + user + " " + pass);
-
-    //buffer = this->getRecvBuffer();
-}
-
-MsgBuffer* TcpClient::getMsgBuffer()
-{
-    return getRecvBuffer();
+    input = std::string(buffer->peek(), buffer->readableBytes());
+    if (input == "success trist007")
+        std::cout << "you are authenticated" << std::endl;
+    
 }
 
 void TcpClient::UserInput(const TcpConnectionPtr &conn)
 {
     //TcpConnectionPtr conn = this->connection();
-    Authenticate(conn);
     std::string userInput;
 
 

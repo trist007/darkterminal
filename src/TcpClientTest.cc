@@ -56,12 +56,7 @@ int main()
             [&client, &loop, &connCount](const TcpConnectionPtr &conn) {
             if (conn->connected())
             {
-            //LOG_DEBUG << " connected!";
-            while (client->m_user.authenticted == false)
-            {
-                client->Authenticate(conn);
-            }
-            client->startUserInput(conn);
+            LOG_DEBUG << " connected!";
             }
             else
             {
@@ -72,7 +67,12 @@ int main()
             }
             });
     client->setMessageCallback(
-            [](const TcpConnectionPtr &conn, MsgBuffer *buf) {
+            [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
+            while (client->m_user.authenticated == false)
+            {
+                client->Authenticate(conn, buf);
+            }
+            client->startUserInput(conn);
             std::cout << std::string(buf->peek(), buf->readableBytes());
             //LOG_DEBUG << std::string(buf->peek(), buf->readableBytes());
             buf->retrieveAll();

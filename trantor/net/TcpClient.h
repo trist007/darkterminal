@@ -69,12 +69,6 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void stop();
 
     /**
-     * @brief Get MsgBuffer*
-     *
-     */
-    MsgBuffer* getMsgBuffer();
-
-    /**
      * @brief change nickname
      *
      */
@@ -102,7 +96,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
      * @brief Start Authentication
      *
      */
-    void Authenticate(const TcpConnectionPtr &conn);
+    void Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer);
 
 
     /**
@@ -112,10 +106,18 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     struct User
     {
         User(const std::string &user) :
-            username(user) {}
+            username(user),
+            connected(false),
+            authenticated(false) {}
+
         User() :
-              username("anonymous") {}
+            username("anonymous"),
+            connected(false),
+            authenticated(false) {}
+
         std::string username;
+        bool connected;
+        bool authenticated;
     } m_user;
 
     /**
