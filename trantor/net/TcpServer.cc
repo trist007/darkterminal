@@ -143,6 +143,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp,
     else
     {
         std::cerr << "Failed password for " << user << std::endl;
+        tcp->send("failed " + user);
     }
 }
 

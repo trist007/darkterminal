@@ -23,6 +23,7 @@
 #include <memory>
 #include <thread>
 #include <sstream>
+#include <chrono>
 
 #include "Socket.h"
 
@@ -207,11 +208,9 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
     std::string response;
     std::string user, pass;
-    std::string input;
 
     while (this->m_user.authenticated == false)
     {
-
         std::cout << "Login" << std::endl;
         std::cout << "user: ";
         std::cin >> user;
@@ -220,17 +219,20 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 
         conn->send("/login " + user + " " + pass);
         buffer->retrieveAll();
-        input = std::string(buffer->peek(), buffer->readableBytes());
-        std::cout << "auth response " << input << std::endl;
-        if (input == "success " + user)
+        do
         {
-            std::cout << "you are authenticated" << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            response = std::string(buffer->peek(), buffer->readableBytes());
+
+        } while (response.empty());
+        std::cout << "response = " << response << std::endl;
+        if (response == "success trist007/login trist007 trist007")
+        {
             this->m_user.authenticated = true;
+            this->m_user.username = user;
         }
         else
-        {
-            std::cerr << "Failed login, try again" << std::endl;
-        }
+            std::cerr << "Failed login" << std::endl;
     }
     
 }
