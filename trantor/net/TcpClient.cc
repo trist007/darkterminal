@@ -158,6 +158,7 @@ void TcpClient::ParseInput(std::string input)
     std::stringstream stream(input);
     std::string token;
 
+    std::cout << "we are here 0" << std::endl;
     if(!input.empty())
     {
         stream >> token;
@@ -167,6 +168,16 @@ void TcpClient::ParseInput(std::string input)
             std::cout << "nick detected" << std::endl;
             stream >> token;
             ChangeNick(token);
+        }
+        else if (token == "success")
+        {
+            stream >> token;
+                std::cout << "we are here 1" << std::endl;
+            if (token != "success")
+            {
+                std::cout << "we are here 2" << std::endl;
+                this->m_user.username = token;
+            }
         }
         else
         {
@@ -192,9 +203,27 @@ void TcpClient::startUserInput(const TcpConnectionPtr &conn)
     t1 = std::thread(func, conn);
 }
 
+void TcpClient::Authenticate(const TcpConnectionPtr &conn)
+{
+    MsgBuffer *buffer;
+    std::string response;
+    std::string user, pass;
+
+    std::cout << "Login" << std::endl;
+    std::cout << "user: ";
+    std::cin >> user;
+    std::cout << "pass: ";
+    std::cin >> pass;
+
+    conn->send("/login " + user + " " + pass);
+
+    buffer = this->getRecvBuffer();
+}
+
 void TcpClient::UserInput(const TcpConnectionPtr &conn)
 {
     //TcpConnectionPtr conn = this->connection();
+    Authenticate(conn);
     std::string userInput;
 
 
@@ -217,6 +246,7 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
         std::getline(std::cin, userInput);
         if(!userInput.empty())
         {
+            std::cout << "we are here -1" << std::endl;
             ParseInput(userInput);
             if(!conn || !conn->connected())
             {

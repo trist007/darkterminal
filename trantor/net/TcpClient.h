@@ -93,6 +93,13 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void UserInput(const TcpConnectionPtr &conn);
 
     /**
+     * @brief Start Authentication
+     *
+     */
+    void Authenticate(const TcpConnectionPtr &conn);
+
+
+    /**
      * @brief struct for user information
      *
      */

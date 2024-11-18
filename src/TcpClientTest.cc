@@ -57,9 +57,10 @@ int main()
             if (conn->connected())
             {
             //LOG_DEBUG << " connected!";
-            std::string tmp = client->m_user.username;
-            tmp += " connected\n";
-            conn->send(tmp);
+            while (client->m_user.authenticted == false)
+            {
+                client->Authenticate(conn);
+            }
             client->startUserInput(conn);
             }
             else

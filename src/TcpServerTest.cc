@@ -12,7 +12,6 @@
  *
  */
 
-#pragma once
 #include <trantor/net/TcpServer.h>
 #include <trantor/utils/Logger.h>
 #include <trantor/net/EventLoopThread.h>
@@ -44,7 +43,7 @@ int main()
         [&server](const TcpConnectionPtr &connectionPtr, MsgBuffer *buffer) {
             std::string input;
             std::string user;
-            LOG_DEBUG<<"recv callback!";
+            //LOG_DEBUG<<"recv callback!";
             input = std::string(buffer->peek(), buffer->readableBytes());
             user = server.ParseInput(connectionPtr, input);
             std::cout << user << ": " << input << std::endl;

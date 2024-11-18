@@ -84,17 +84,26 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
         User(const std::string &user) :
             tcp_ptr(nullptr),
             username(user),
-            connected(false) {}
+            connected(false),
+            authenticated(false) {}
 
         User() :
             tcp_ptr(nullptr),
             username("anon"),
-            connected(false) {}
+            connected(false),
+            authenticated(false) {}
 
         TcpConnectionPtr tcp_ptr;
         std::string username;
         bool connected;
+        bool authenticated;
     };
+
+    /**
+     * @brief Authentication
+     *
+     */
+    void Authenticate(const TcpConnectionPtr &tcp, std::string user, std::string pass);
 
     /**
      * @brief Array to hold User info
@@ -137,7 +146,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Find user in struct User
      *
      */
-    User* FindUser(const TcpConnectionPtr &tcp);
+    int FindUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Change Nick
