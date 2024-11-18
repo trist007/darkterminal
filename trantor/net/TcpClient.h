@@ -69,6 +69,12 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void stop();
 
     /**
+     * @brief Get MsgBuffer*
+     *
+     */
+    MsgBuffer* getMsgBuffer();
+
+    /**
      * @brief change nickname
      *
      */

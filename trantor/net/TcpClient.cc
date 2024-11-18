@@ -205,7 +205,7 @@ void TcpClient::startUserInput(const TcpConnectionPtr &conn)
 
 void TcpClient::Authenticate(const TcpConnectionPtr &conn)
 {
-    MsgBuffer *buffer;
+    //MsgBuffer *buffer;
     std::string response;
     std::string user, pass;
 
@@ -217,7 +217,12 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
 
     conn->send("/login " + user + " " + pass);
 
-    buffer = this->getRecvBuffer();
+    //buffer = this->getRecvBuffer();
+}
+
+MsgBuffer* TcpClient::getMsgBuffer()
+{
+    return getRecvBuffer();
 }
 
 void TcpClient::UserInput(const TcpConnectionPtr &conn)
