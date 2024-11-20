@@ -24,7 +24,7 @@ using namespace trantor;
 #define MINOR 1
 #define PATCH 33
 
-struct Version
+typedef struct Version
 {
     size_t major;
     size_t minor;
@@ -36,7 +36,7 @@ struct Version
         snprintf(version, 64, "v%zu.%zu.%zu", major, minor, patch);
         return std::string(version);
     }
-};
+} Version;
 
 Version current = { MAJOR, MINOR, PATCH };
 
