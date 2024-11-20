@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
-project(darkterminal)
+project(trantor)
 
-set(CMAKE_CXX_STANDARD                  17)
+set(CMAKE_CXX_STANDARD          17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS                OFF)
+set(CMAKE_CXX_EXTENSIONS        OFF)
 
 option(BUILD_DOC "Build Doxygen documentation" OFF)
 option(BUILD_C-ARES "Build C-ARES" ON)

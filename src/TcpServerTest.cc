@@ -20,6 +20,26 @@
 using namespace trantor;
 #define USE_IPV6 0
 
+#define MAJOR 0
+#define MINOR 1
+#define PATCH 33
+
+struct Version
+{
+    size_t major;
+    size_t minor;
+    size_t patch;
+
+    std::string printVersion()
+    {
+        char version[64];
+        snprintf(version, 64, "v%zu.%zu.%zu", major, minor, patch);
+        return std::string(version);
+    }
+};
+
+Version current = { MAJOR, MINOR, PATCH };
+
 int main()
 {
     LOG_DEBUG << "test start";
@@ -56,7 +76,7 @@ int main()
         {
             LOG_DEBUG << "New connection";
             server.AddUser(connPtr);
-            connPtr->send("welcome");
+            connPtr->send("Welcome to darkterminal " + current.printVersion());
         }
         else if (connPtr->disconnected())
         {
