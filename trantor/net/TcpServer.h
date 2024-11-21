@@ -103,7 +103,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Authentication
      *
      */
-    size_t Authenticate(const TcpConnectionPtr &tcp, std::string user, std::string pass);
+    void Authenticate(const TcpConnectionPtr &tcp, std::string &input);
 
     /**
      * @brief Array to hold User info
@@ -140,7 +140,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Add user
      *
      */
-    void AddUser(const TcpConnectionPtr &tcp);
+    size_t AddUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Find user in struct User
@@ -158,7 +158,13 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Parse Input from the clients
      *
      */
-    const std::string ParseInput(const TcpConnectionPtr &ptr, const std::string& input);
+    void ParseInput(const TcpConnectionPtr &ptr, const std::string& input);
+
+    /**
+     * @brief Check if connection is registered
+     *
+     */
+    size_t isRegistered(const TcpConnectionPtr &ptr);
 
     /**
      * @brief Set the number of event loops in which the I/O of connections to

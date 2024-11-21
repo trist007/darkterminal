@@ -193,27 +193,6 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-void TcpClient::startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
-{
-    std::string input;
-    /*
-    do
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-        input = std::string(buffer->peek(), buffer->readableBytes());
-    } while (input.empty());
-    */
-
-    auto func = std::bind(&TcpClient::UserInput, this, _1, _2);
-    //t1 = std::thread(func);
-
-    if(t1.joinable())
-    {
-        t1.join();
-    }        
-    t1 = std::thread(func, conn, buffer);
-}
-
 void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
     std::string response;
@@ -221,14 +200,13 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 
     while (this->m_user.authenticated == false)
     {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "user: ";
         std::cin >> user;
         std::cout << "pass: ";
         std::cin >> pass;
 
-
-        buffer->ensureWritableBytes(32);
-        conn->send("/login " + user + " " + pass);
+        conn->send(user + pass);
         buffer->retrieveAll();
         do
         {
@@ -236,22 +214,28 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
             response = std::string(buffer->peek(), buffer->readableBytes());
 
         } while (response.empty());
-        std::cout << "response = " << response;
+        //std::cout << "response = " << response;
         if (response == "access granted")
-        //if ((std::strcmp("success", " ") < 0))
         {
             this->m_user.authenticated = true;
             this->m_user.username = user;
-            buffer->ensureWritableBytes(32);
-            buffer->retrieveAll();
-            if(conn->connected())
-                //conn->send("/authenticated");
-                conn->send(buffer->peek(), buffer->readableBytes());
         }
         else
-            std::cerr << "Failed login" << std::endl;
+        {
+            std::cerr << "access denied, try again" << std::endl;
+        }
     }
-    
+}
+
+void TcpClient::startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+{
+    auto func = std::bind(&TcpClient::UserInput, this, _1, _2);
+
+    if(t1.joinable())
+    {
+        t1.join();
+    }        
+    t1 = std::thread(func, conn, buffer);
 }
 
 void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
@@ -268,10 +252,6 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
     {
         std::cerr << "ParseInput: conn is null or not connected" << std::endl;
     }
-    else
-    {
-        //std::cout << "ParseInput: conn is good" << std::endl;
-    }
 
     if (this->m_user.authenticated == false)
     {
@@ -281,6 +261,7 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
     while(userInput != "/quit")
     {
         std::cout << this->m_user.username << ": ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, userInput);
         if(!userInput.empty())
         {

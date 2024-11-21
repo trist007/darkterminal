@@ -71,13 +71,6 @@ int main()
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
             if ( client->m_user.authenticated == false)
             {
-                std::string welcome;
-                do
-                {
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
-                    welcome = std::string(buf->peek(), buf->readableBytes());
-                } while (welcome.empty());
-
                 client->startUserInput(conn, buf);
             }
             std::cout << std::string(buf->peek(), buf->readableBytes());
