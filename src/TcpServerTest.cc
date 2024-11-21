@@ -66,9 +66,13 @@ int main()
             //LOG_DEBUG<<"recv callback!";
             input = std::string(buffer->peek(), buffer->readableBytes());
             user = server.ParseInput(connectionPtr, input);
-            std::cout << user << ": " << input << std::endl;
-            connectionPtr->send(buffer->peek(), buffer->readableBytes());
             buffer->retrieveAll();
+            if (server.m_user_array[0].authenticated == true)
+            {
+                std::cout << user << ": " << input << std::endl;
+                connectionPtr->send(buffer->peek(), buffer->readableBytes());
+                buffer->retrieveAll();
+            }
             // connectionPtr->forceClose();
         });
     server.setConnectionCallback([&server](const TcpConnectionPtr &connPtr) {
@@ -76,7 +80,7 @@ int main()
         {
             LOG_DEBUG << "New connection";
             server.AddUser(connPtr);
-            connPtr->send("Welcome to darkterminal " + current.printVersion());
+            connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n");
         }
         else if (connPtr->disconnected())
         {

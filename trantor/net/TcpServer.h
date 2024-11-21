@@ -103,7 +103,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Authentication
      *
      */
-    void Authenticate(const TcpConnectionPtr &tcp, std::string user, std::string pass);
+    size_t Authenticate(const TcpConnectionPtr &tcp, std::string user, std::string pass);
 
     /**
      * @brief Array to hold User info
@@ -146,13 +146,13 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Find user in struct User
      *
      */
-    int FindUser(const TcpConnectionPtr &tcp);
+    size_t FindUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Change Nick
      *
      */
-    void ChangeNick(const TcpConnectionPtr &tcp, std::string& nick);
+    size_t ChangeNick(const TcpConnectionPtr &tcp, std::string& nick);
 
     /**
      * @brief Parse Input from the clients

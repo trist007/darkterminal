@@ -85,6 +85,7 @@ void TcpServer::parseCommand(std::string input)
                     std::cout << this->m_user_array[i].username << std::endl;
                 }
             }
+            std::cout << m_user_array[0].authenticated << std::endl;
         }
         else if (token == "/kick")
         {
@@ -127,23 +128,26 @@ void TcpServer::Command()
     std::exit(0);
 }
 
-void TcpServer::Authenticate(const TcpConnectionPtr &tcp,
+size_t TcpServer::Authenticate(const TcpConnectionPtr &tcp,
                                     std::string user,
                                     std::string pass)
 {
-    int userIdx;
+    size_t userIdx;
     if ((user == "trist007") && (pass == "trist007"))
     {
         std::cout << "Successful login for " << user << std::endl;
         userIdx = FindUser(tcp);
         m_user_array[userIdx].username = user;
-        m_user_array[userIdx].authenticated = true;
-        tcp->send("success " + user);
+        //m_user_array[userIdx].authenticated = true;
+        //tcp->send("success " + user);
+        tcp->send("access granted");
+        return userIdx;
     }
     else
     {
         std::cerr << "Failed password for " << user << std::endl;
         tcp->send("failed " + user);
+        return -1;
     }
 }
 
@@ -172,7 +176,7 @@ void TcpServer::AddUser(const TcpConnectionPtr &tcp)
     }
 }
 
-int TcpServer::FindUser(const TcpConnectionPtr &tcp)
+size_t TcpServer::FindUser(const TcpConnectionPtr &tcp)
 {
     for (std::size_t i = 0; i < m_user_array.size(); i++)
     {
@@ -185,7 +189,7 @@ int TcpServer::FindUser(const TcpConnectionPtr &tcp)
     return -1;
 }
 
-void TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
+size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
 {
     for (std::size_t i = 0; i < m_user_array.size(); i++)
     {
@@ -195,24 +199,27 @@ void TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
             {
                 m_user_array[i].username = nick;
                 std::cout << "nick has been updated to " << nick << std::endl; 
-                break;
+                return i;
             }
-            else
+            else if (m_user_array[i].username == nick)
             {
                 tcp->send("Cannot change your nick to the same nick");
+                return i;
             }
         }
         else
         {
             std::cerr << "Cannot find user in the m_user_array" << std::endl;
+            return -1;
         }
 
     }
+    return -1;
 }
 
 const std::string TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input)
 {
-    int userIdx;
+    size_t userIdx = 0;
     std::string token;
 
     std::string user;
@@ -231,8 +238,15 @@ const std::string TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::
             std::cout << "token 2 = " << token << std::endl;
             if(token != "/nick")
             {
-               ChangeNick(tcp, token);
+               userIdx = ChangeNick(tcp, token);
+               return m_user_array[userIdx].username;
             }
+        }
+        if(token == "/authenticated")
+        {
+            userIdx = FindUser(tcp);
+            m_user_array[userIdx].authenticated = true;
+            return m_user_array[userIdx].username;
         }
         else if(token == "/login")
         {
@@ -255,7 +269,9 @@ const std::string TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::
             {
                 std::cerr << "Invalid user/pass 2" << std::endl;
             }
-            Authenticate(tcp, user, pass);
+            userIdx = Authenticate(tcp, user, pass);
+            return m_user_array[userIdx].username;
+
         }
     }
     else
@@ -263,9 +279,15 @@ const std::string TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::
         std::cerr << "ParseInput: input parameter is null" << std::endl;
         return nullptr; 
     }
-
-    userIdx = FindUser(tcp);
-    return m_user_array[userIdx].username;
+    if (userIdx < 0)
+    {
+        std::cerr << "getting -1 for userIdx" << std::endl;
+        return nullptr;
+    }
+    else
+    {
+        return m_user_array[userIdx].username;
+    }
 }
 
 void TcpServer::setBeforeListenSockOptCallback(SockOptCallback cb)
