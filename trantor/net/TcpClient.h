@@ -97,7 +97,6 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
      *
      */
     void Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer);
-    void Authenticate2(const TcpConnectionPtr &conn);
 
 
     /**

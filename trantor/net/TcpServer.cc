@@ -173,7 +173,7 @@ size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
             m_user_array[i].tcp_ptr = tcp; 
             m_user_array[i].connected = true;
             m_user_array[i].username = "anon" + random;
-            return 0;
+            return i;
         }
     }
     std::cerr << "Max conn of " << this->m_max_conn <<" reached" << std::endl;

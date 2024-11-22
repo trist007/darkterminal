@@ -54,11 +54,20 @@ int main()
     });
     client->setConnectionCallback(
             [&client, &loop, &connCount](const TcpConnectionPtr &conn) {
+
             if (conn->connected())
             {
+                MsgBuffer* buf;
+
                 LOG_DEBUG << " connected!";
                 client->m_user.connected = true;
-                client->Authenticate2(conn);
+
+                buf = conn->getRecvBuffer();
+                std::cout << std::string(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+
+                client->Authenticate(conn, buf);
+                client->startUserInput(conn);
             }
             else
             {
@@ -67,27 +76,15 @@ int main()
                 if (connCount == 0)
                     loop.quit();
             }
+
             });
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
 
-            std::string response;
-            if (client->m_user.userinput == false)
-            {
-                if (client->m_user.authenticated == false)
-                {
-                    response = std::string(buf->peek(), buf->readableBytes());
-                    if (response == "access granted")
-                    {
-                        client->m_user.authenticated = true;
-                    }
-                }
-                client->startUserInput(conn);
-            }
             std::cout << std::string(buf->peek(), buf->readableBytes());
-            //LOG_DEBUG << std::string(buf->peek(), buf->readableBytes());
             buf->retrieveAll();
             // conn->shutdown();
+
             });
     client->connect();
     loop.loop();

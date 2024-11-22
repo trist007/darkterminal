@@ -64,10 +64,10 @@ int main()
 
         size_t id;
         std::string input;
-        id = server.isRegistered(connectionPtr);
-
         input = std::string(buffer->peek(), buffer->readableBytes());
         buffer->retrieveAll();
+
+        id = server.isRegistered(connectionPtr);
 
         if (server.m_user_array[id].authenticated == false)
         {
@@ -77,25 +77,28 @@ int main()
         {
             server.ParseInput(connectionPtr, input);
             std::cout << server.m_user_array[id].username << ": " << input << std::endl;
-            connectionPtr->send(buffer->peek(), buffer->readableBytes());
         }
 
         // connectionPtr->forceClose();
         });
     server.setConnectionCallback([&server](const TcpConnectionPtr &connPtr) {
-        if (connPtr->connected())
-        {
-            LOG_DEBUG << "New connection";
-            connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n");
-            if ((server.AddUser(connPtr)) == -1)
-            {
-                std::cerr << "Try increasing the max connections" << std::endl;
-            }
-        }
-        else if (connPtr->disconnected())
-        {
-            LOG_DEBUG << "connection disconnected";
-        }
+
+        size_t id;
+        std::string input;
+        MsgBuffer *buffer;
+
+        LOG_DEBUG << "New connection";
+
+        connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n");
+
+        id = server.AddUser(connPtr);
+
+        //id = server.isRegistered(connectionPtr);
+        buffer = connPtr->getRecvBuffer();
+
+        input = std::string(buffer->peek(), buffer->readableBytes());
+        buffer->retrieveAll();
+
     });
     server.setIoLoopNum(3);
     server.start();

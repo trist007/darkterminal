@@ -193,7 +193,6 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-/*
 void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
     std::string response;
@@ -227,8 +226,8 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
         }
     }
 }
-*/
 
+/*
 void TcpClient::Authenticate2(const TcpConnectionPtr &conn)
 {
     std::string user;
@@ -242,6 +241,7 @@ void TcpClient::Authenticate2(const TcpConnectionPtr &conn)
 
     conn->send(user + " " + pass);
 }
+*/
 
 void TcpClient::startUserInput(const TcpConnectionPtr &conn)
 {
