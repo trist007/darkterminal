@@ -18,6 +18,7 @@
 #include <vector>
 #include <sstream>
 #include <random>
+#include <mutex>
 #include "Acceptor.h"
 #include "inner/TcpConnectionImpl.h"
 
@@ -161,8 +162,10 @@ size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<> dis(1, 1000);
+    std::mutex m_user_array_mutex;
 
     random = std::to_string(dis(e1) + 1000);
+    std::lock_guard<std::mutex> lock(m_user_array_mutex);;
     for (size_t i = 0; i < this->m_max_conn; i++)
     {
         if (m_user_array[i].tcp_ptr == nullptr)

@@ -58,6 +58,7 @@ int main()
             {
                 LOG_DEBUG << " connected!";
                 client->m_user.connected = true;
+                client->Authenticate2(conn);
             }
             else
             {
@@ -69,9 +70,19 @@ int main()
             });
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
-            if ( client->m_user.authenticated == false)
+
+            std::string response;
+            if (client->m_user.userinput == false)
             {
-                client->startUserInput(conn, buf);
+                if (client->m_user.authenticated == false)
+                {
+                    response = std::string(buf->peek(), buf->readableBytes());
+                    if (response == "access granted")
+                    {
+                        client->m_user.authenticated = true;
+                    }
+                }
+                client->startUserInput(conn);
             }
             std::cout << std::string(buf->peek(), buf->readableBytes());
             //LOG_DEBUG << std::string(buf->peek(), buf->readableBytes());
