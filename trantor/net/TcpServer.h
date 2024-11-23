@@ -119,6 +119,12 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
     };
 
     /**
+     * @brief AuthenticationDB
+     *
+     */
+    size_t AuthenticationDB(std::string user, std::string pass);
+
+    /**
      * @brief Authentication
      *
      */

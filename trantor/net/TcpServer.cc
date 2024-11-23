@@ -22,6 +22,10 @@
 #include "Acceptor.h"
 #include "inner/TcpConnectionImpl.h"
 
+
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <SQLiteCpp/VariadicBind.h>
+
 using namespace trantor;
 using namespace std::placeholders;
 
@@ -95,7 +99,7 @@ void TcpServer::parseCommand(std::string input)
             {
                 std::cout << "Attempting to give " << token <<
                     " the boot" << std::endl;
-                kickUser(token);
+                this->kickUser(token);
             }
 
         }
@@ -122,11 +126,36 @@ void TcpServer::Command()
         std::getline(std::cin, input);
         if (!input.empty())
         {
-            parseCommand(input);
+            this->parseCommand(input);
         }
     }
     std::cout << "Closing command shell" << std::endl;
     std::exit(0);
+}
+
+size_t TcpServer::AuthenticationDB(std::string user, std::string pass)
+{
+    SQLite::Database db("../darkterminal.db");
+    SQLite::Statement query(db, "SELECT password FROM user WHERE username=?");
+
+    query.bind(1, user);
+
+    std::string result;
+
+    while (query.executeStep())
+    {
+        const std::string value = query.getColumn(0);
+        result = value;
+    }
+
+    if (pass == result)
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
@@ -134,6 +163,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
     std::string user, pass;
     std::string token;
     std::stringstream stream(input);
+    size_t result = -1;
 
     size_t id = FindUser(tcp);
 
@@ -142,7 +172,10 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
         stream >> user;
         stream >> pass;
 
-        if ((user == "trist007") && (pass == "trist007"))
+        result = this->AuthenticationDB(user, pass);
+
+        //if ((user == "trist007") && (pass == "trist007"))
+        if (result == 0)
         {
             std::cout << "\nSuccessful login for " << user << std::endl;
             m_user_array[id].username = user;

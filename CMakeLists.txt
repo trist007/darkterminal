@@ -39,8 +39,10 @@ set(INSTALL_TRANTOR_CMAKE_DIR
     CACHE PATH "Installation directory for cmake files"
 )
 
+#add_subdirectory(third_party/SQLiteCpp)
+find_package(SQLiteCpp REQUIRED)
 add_executable(server src/TcpServerTest.cc)
-target_link_libraries(server ${PROJECT_NAME})
+target_link_libraries(server ${PROJECT_NAME} SQLiteCpp sqlite3 pthread dl)
 add_executable(client src/TcpClientTest.cc)
 target_link_libraries(client ${PROJECT_NAME})
 add_library(${PROJECT_NAME})
@@ -82,7 +84,7 @@ if(NOT
    "Windows"
    AND CMAKE_CXX_COMPILER_ID MATCHES Clang|GNU
 )
-  target_compile_options(${PROJECT_NAME} PRIVATE -g -Wall -Wextra -Werror)
+  target_compile_options(${PROJECT_NAME} PRIVATE -I /usr/local/include -g -Wall -Wextra -Werror)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Haiku")

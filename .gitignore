@@ -5,3 +5,4 @@ cmake-build-debug
 .vs
 CMakeSettings.json
 .cache
+*.db
