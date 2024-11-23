@@ -168,7 +168,7 @@ void TcpClient::ParseInput(std::string input)
         {
             std::cout << "nick detected" << std::endl;
             stream >> token;
-            ChangeNick(token);
+            this->ChangeNick(token);
         }
         else if (token == "success")
         {
@@ -219,7 +219,7 @@ void TcpClient::AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *bu
     else
     {
         std::cout << token1 + " " + token2 << std::endl;
-        Authenticate(conn);
+        this->Authenticate(conn);
     }
 }
 
