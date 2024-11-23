@@ -24,6 +24,7 @@
 #include <thread>
 #include <sstream>
 #include <chrono>
+#include <cstring>
 
 #include "Socket.h"
 
@@ -159,7 +160,6 @@ void TcpClient::ParseInput(std::string input)
     std::stringstream stream(input);
     std::string token;
 
-    std::cout << "we are here 0" << std::endl;
     if(!input.empty())
     {
         stream >> token;
@@ -173,10 +173,8 @@ void TcpClient::ParseInput(std::string input)
         else if (token == "success")
         {
             stream >> token;
-                std::cout << "we are here 1" << std::endl;
             if (token != "success")
             {
-                std::cout << "we are here 2" << std::endl;
                 this->m_user.username = token;
             }
         }
@@ -192,52 +190,68 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-void TcpClient::startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+void TcpClient::AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
-    auto func = std::bind(&TcpClient::UserInput, this, _1, _2);
-    //t1 = std::thread(func);
+    std::string response;
+    std::string user;
+    std::string token1, token2;
+
+    do
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        response = std::string(buffer->peek(), buffer->readableBytes());
+        buffer->retrieveAll();
+    } while (response.empty());
+
+    std::stringstream stream(response);
+
+    stream >> token1;
+    stream >> token2;
+    stream >> user;
+
+    if (token1 + " " + token2  == "access granted")
+    {
+        std::cout << token1 + " " + token2 << std::endl;
+        this->m_user.authenticated = true;
+        this->m_user.username = user;
+        this->startUserInput(conn);
+    }
+    else
+    {
+        std::cout << token1 + " " + token2 << std::endl;
+        Authenticate(conn);
+    }
+}
+
+void TcpClient::Authenticate(const TcpConnectionPtr &conn)
+{
+    std::string user;
+    std::string pass;
+
+    //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "user: ";
+    std::cin >> user;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "pass: ";
+    std::cin >> pass;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    conn->send(user + " " + pass);
+}
+
+void TcpClient::startUserInput(const TcpConnectionPtr &conn)
+{
+    this->m_user.userinput = true;
+    auto func = std::bind(&TcpClient::UserInput, this, _1);
 
     if(t1.joinable())
     {
         t1.join();
     }        
-    t1 = std::thread(func, conn, buffer);
+    t1 = std::thread(func, conn);
 }
 
-void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
-{
-    std::string response;
-    std::string user, pass;
-
-    while (this->m_user.authenticated == false)
-    {
-        std::cout << "Login" << std::endl;
-        std::cout << "user: ";
-        std::cin >> user;
-        std::cout << "pass: ";
-        std::cin >> pass;
-
-        conn->send("/login " + user + " " + pass);
-        buffer->retrieveAll();
-        do
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(2));
-            response = std::string(buffer->peek(), buffer->readableBytes());
-
-        } while (response.empty());
-        std::cout << "response = " << response << std::endl;
-        if (response == "success trist007/login trist007 trist007")
-        {
-            this->m_user.authenticated = true;
-            this->m_user.username = user;
-        }
-        else
-            std::cerr << "Failed login" << std::endl;
-    }
-    
-}
-
-void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+void TcpClient::UserInput(const TcpConnectionPtr &conn)
 {
     //TcpConnectionPtr conn = this->connection();
     std::string userInput;
@@ -251,23 +265,14 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer)
     {
         std::cerr << "ParseInput: conn is null or not connected" << std::endl;
     }
-    else
-    {
-        std::cout << "ParseInput: conn is good" << std::endl;
-    }
-
-    if (this->m_user.authenticated == false)
-    {
-        Authenticate(conn, buffer);
-    }
 
     while(userInput != "/quit")
     {
         std::cout << this->m_user.username << ": ";
+        //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, userInput);
         if(!userInput.empty())
         {
-            std::cout << "we are here -1" << std::endl;
             ParseInput(userInput);
             if(!conn || !conn->connected())
             {

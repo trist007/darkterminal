@@ -27,6 +27,22 @@
 #include <string>
 #include <array>
 
+typedef struct Version
+{
+    size_t major;
+    size_t minor;
+    size_t patch;
+
+    const std::string printVersion() const
+    {
+        char version[64];
+        snprintf(version, 64, "v%zu.%zu.%zu", major, minor, patch);
+        return std::string(version);
+    }
+} Version;
+
+extern Version current;
+
 #define MAX_CONNECTIONS 10
 
 namespace trantor
@@ -85,17 +101,20 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
             tcp_ptr(nullptr),
             username(user),
             connected(false),
+            welcome(false),
             authenticated(false) {}
 
         User() :
             tcp_ptr(nullptr),
             username("anon"),
             connected(false),
+            welcome(false),
             authenticated(false) {}
 
         TcpConnectionPtr tcp_ptr;
         std::string username;
         bool connected;
+        bool welcome;
         bool authenticated;
     };
 
@@ -103,7 +122,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Authentication
      *
      */
-    void Authenticate(const TcpConnectionPtr &tcp, std::string user, std::string pass);
+    void Authenticate(const TcpConnectionPtr &tcp, std::string &input);
 
     /**
      * @brief Array to hold User info
@@ -140,25 +159,31 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Add user
      *
      */
-    void AddUser(const TcpConnectionPtr &tcp);
+    size_t AddUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Find user in struct User
      *
      */
-    int FindUser(const TcpConnectionPtr &tcp);
+    size_t FindUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Change Nick
      *
      */
-    void ChangeNick(const TcpConnectionPtr &tcp, std::string& nick);
+    size_t ChangeNick(const TcpConnectionPtr &tcp, std::string& nick);
 
     /**
      * @brief Parse Input from the clients
      *
      */
-    const std::string ParseInput(const TcpConnectionPtr &ptr, const std::string& input);
+    void ParseInput(const TcpConnectionPtr &ptr, const std::string& input, size_t id);
+
+    /**
+     * @brief Check if connection is registered
+     *
+     */
+    size_t isRegistered(const TcpConnectionPtr &ptr);
 
     /**
      * @brief Set the number of event loops in which the I/O of connections to

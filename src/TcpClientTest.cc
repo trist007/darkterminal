@@ -15,8 +15,8 @@ using namespace trantor;
 #define USE_IPV6 0
 int main()
 {
-    trantor::Logger::setLogLevel(trantor::Logger::kTrace);
-    LOG_DEBUG << "TcpClient class test!";
+    //trantor::Logger::setLogLevel(trantor::Logger::kTrace);
+    //LOG_DEBUG << "TcpClient class test!";
     EventLoop loop;
 #if USE_IPV6
     InetAddress serverAddr("::1", 8888, true);
@@ -30,7 +30,7 @@ int main()
             serverAddr,
             "tcpclienttest");
     client->setSockOptCallback([](int fd) {
-            LOG_DEBUG << "setSockOptCallback!";
+            //LOG_DEBUG << "setSockOptCallback!";
 #ifdef _WIN32
 #elif __linux__
             int optval = 10;
@@ -54,25 +54,46 @@ int main()
     });
     client->setConnectionCallback(
             [&client, &loop, &connCount](const TcpConnectionPtr &conn) {
+
             if (conn->connected())
             {
-            LOG_DEBUG << " connected!";
+                connCount++;
+                //LOG_DEBUG << " connected!";
+                client->m_user.connected = true;
             }
             else
             {
-            LOG_DEBUG << " disconnected";
-            --connCount;
-            if (connCount == 0)
-            loop.quit();
+                LOG_DEBUG << " disconnected";
+                //--connCount;
+                if (connCount == 0)
+                    loop.quit();
             }
+
             });
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
-            client->startUserInput(conn, buf);
-            std::cout << std::string(buf->peek(), buf->readableBytes());
-            //LOG_DEBUG << std::string(buf->peek(), buf->readableBytes());
-            buf->retrieveAll();
-            // conn->shutdown();
+
+            if (client->m_user.authenticated == true && client->m_user.welcome == true)
+            {
+                // conn->shutdown();
+                std::cout << std::string(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+            }
+
+            if (client->m_user.authenticated == false && client->m_user.welcome == true)
+            {
+                client->AuthenticateResponse(conn, buf);
+            }
+
+            // Show welcome banner
+            if (client->m_user.welcome == false)
+            {
+                std::cout << std::string(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+                client->Authenticate(conn);
+                client->m_user.welcome = true;
+            }
+
             });
     client->connect();
     loop.loop();

@@ -84,19 +84,20 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
      * @brief Start UserInput thread
      *
      */
-    void startUserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer);
+    void startUserInput(const TcpConnectionPtr &conn);
 
     /**
      * @brief UserInput thread for chat
      *
      */
-    void UserInput(const TcpConnectionPtr &conn, MsgBuffer *buffer);
+    void UserInput(const TcpConnectionPtr &conn);
 
     /**
      * @brief Start Authentication
      *
      */
-    void Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer);
+    void Authenticate(const TcpConnectionPtr &conn);
+    void AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer);
 
 
     /**
@@ -108,15 +109,21 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
         User(const std::string &user) :
             username(user),
             connected(false),
+            welcome(false),
+            userinput(false),
             authenticated(false) {}
 
         User() :
             username("anonymous"),
             connected(false),
+            welcome(false),
+            userinput(false),
             authenticated(false) {}
 
         std::string username;
         bool connected;
+        bool welcome;
+        bool userinput;
         bool authenticated;
     } m_user;
 
