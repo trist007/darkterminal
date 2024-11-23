@@ -85,17 +85,20 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
             tcp_ptr(nullptr),
             username(user),
             connected(false),
+            welcome(false),
             authenticated(false) {}
 
         User() :
             tcp_ptr(nullptr),
             username("anon"),
             connected(false),
+            welcome(false),
             authenticated(false) {}
 
         TcpConnectionPtr tcp_ptr;
         std::string username;
         bool connected;
+        bool welcome;
         bool authenticated;
     };
 

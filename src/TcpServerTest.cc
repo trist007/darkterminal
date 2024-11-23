@@ -76,7 +76,7 @@ int main()
         else
         {
             server.ParseInput(connectionPtr, input);
-            std::cout << server.m_user_array[id].username << ": " << input << std::endl;
+            std::cout << "\n" + server.m_user_array[id].username << ": " << input << std::endl;
         }
 
         // connectionPtr->forceClose();
@@ -84,20 +84,14 @@ int main()
     server.setConnectionCallback([&server](const TcpConnectionPtr &connPtr) {
 
         size_t id;
-        std::string input;
-        MsgBuffer *buffer;
 
         LOG_DEBUG << "New connection";
-
         connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n");
-
-        id = server.AddUser(connPtr);
-
-        //id = server.isRegistered(connectionPtr);
-        buffer = connPtr->getRecvBuffer();
-
-        input = std::string(buffer->peek(), buffer->readableBytes());
-        buffer->retrieveAll();
+        if ((id = server.AddUser(connPtr)) == -1)
+        {
+            std::cerr << "Max conn of " << server.m_max_conn <<" reached" << std::endl;
+            std::cerr << "Cannot add user" << std::endl;
+        }
 
     });
     server.setIoLoopNum(3);

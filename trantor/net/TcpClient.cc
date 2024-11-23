@@ -160,7 +160,6 @@ void TcpClient::ParseInput(std::string input)
     std::stringstream stream(input);
     std::string token;
 
-    std::cout << "we are here 0" << std::endl;
     if(!input.empty())
     {
         stream >> token;
@@ -174,10 +173,8 @@ void TcpClient::ParseInput(std::string input)
         else if (token == "success")
         {
             stream >> token;
-                std::cout << "we are here 1" << std::endl;
             if (token != "success")
             {
-                std::cout << "we are here 2" << std::endl;
                 this->m_user.username = token;
             }
         }
@@ -193,42 +190,37 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-void TcpClient::Authenticate(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+void TcpClient::AuthenticateResponse(MsgBuffer *buffer)
 {
     std::string response;
-    std::string user, pass;
+    std::string user;
+    std::string token1, token2;
 
-    while (this->m_user.authenticated == false)
+    do
     {
-        //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "user: ";
-        std::cin >> user;
-        std::cout << "pass: ";
-        std::cin >> pass;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        response = std::string(buffer->peek(), buffer->readableBytes());
+    } while (response.empty());
 
-        buffer->retrieveAll();
-        conn->send(user + " " + pass);
-        do
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            response = std::string(buffer->peek(), buffer->readableBytes());
+    std::stringstream stream(response);
 
-        } while (response.empty());
-        std::cout << "response = " << response << std::endl;
-        if (response == "access granted")
-        {
-            this->m_user.authenticated = true;
-            this->m_user.username = user;
-        }
-        else
-        {
-            std::cerr << "access denied, try again" << std::endl;
-        }
+    stream >> token1;
+    stream >> token2;
+    stream >> user;
+
+    if (token1 + " " + token2  == "access granted")
+    {
+        std::cout << "access granted" << std::endl;
+        this->m_user.authenticated = true;
+        this->m_user.username = user;
+    }
+    else
+    {
+        std::cerr << "access denied, try again" << std::endl;
     }
 }
 
-/*
-void TcpClient::Authenticate2(const TcpConnectionPtr &conn)
+void TcpClient::Authenticate(const TcpConnectionPtr &conn)
 {
     std::string user;
     std::string pass;
@@ -241,7 +233,6 @@ void TcpClient::Authenticate2(const TcpConnectionPtr &conn)
 
     conn->send(user + " " + pass);
 }
-*/
 
 void TcpClient::startUserInput(const TcpConnectionPtr &conn)
 {
@@ -277,7 +268,6 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
         std::getline(std::cin, userInput);
         if(!userInput.empty())
         {
-            std::cout << "we are here -1" << std::endl;
             ParseInput(userInput);
             if(!conn || !conn->connected())
             {

@@ -57,17 +57,9 @@ int main()
 
             if (conn->connected())
             {
-                MsgBuffer* buf;
-
+                connCount++;
                 LOG_DEBUG << " connected!";
                 client->m_user.connected = true;
-
-                buf = conn->getRecvBuffer();
-                std::cout << std::string(buf->peek(), buf->readableBytes());
-                buf->retrieveAll();
-
-                client->Authenticate(conn, buf);
-                client->startUserInput(conn);
             }
             else
             {
@@ -81,9 +73,29 @@ int main()
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
 
-            std::cout << std::string(buf->peek(), buf->readableBytes());
-            buf->retrieveAll();
-            // conn->shutdown();
+            if (client->m_user.authenticated == true && client->m_user.welcome == true)
+            {
+                // conn->shutdown();
+                std::cout << std::string(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+            }
+
+            if (client->m_user.authenticated == false && client->m_user.welcome == true)
+            {
+                client->AuthenticateResponse(buf);
+
+                // start UserInput thread
+                client->startUserInput(conn);
+            }
+
+            // Show welcome banner
+            if (client->m_user.welcome == false)
+            {
+                std::cout << std::string(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+                client->Authenticate(conn);
+                client->m_user.welcome = true;
+            }
 
             });
     client->connect();

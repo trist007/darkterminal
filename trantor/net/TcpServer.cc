@@ -147,7 +147,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
             std::cout << "\nSuccessful login for " << user << std::endl;
             m_user_array[id].username = user;
             m_user_array[id].authenticated = true;
-            tcp->send("access granted");
+            tcp->send("access granted " + user);
         }
         else
         {
@@ -176,7 +176,6 @@ size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
             return i;
         }
     }
-    std::cerr << "Max conn of " << this->m_max_conn <<" reached" << std::endl;
     return -1;
 }
 
