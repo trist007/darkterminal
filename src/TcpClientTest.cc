@@ -15,8 +15,8 @@ using namespace trantor;
 #define USE_IPV6 0
 int main()
 {
-    trantor::Logger::setLogLevel(trantor::Logger::kTrace);
-    LOG_DEBUG << "TcpClient class test!";
+    //trantor::Logger::setLogLevel(trantor::Logger::kTrace);
+    //LOG_DEBUG << "TcpClient class test!";
     EventLoop loop;
 #if USE_IPV6
     InetAddress serverAddr("::1", 8888, true);
@@ -30,7 +30,7 @@ int main()
             serverAddr,
             "tcpclienttest");
     client->setSockOptCallback([](int fd) {
-            LOG_DEBUG << "setSockOptCallback!";
+            //LOG_DEBUG << "setSockOptCallback!";
 #ifdef _WIN32
 #elif __linux__
             int optval = 10;
@@ -58,13 +58,13 @@ int main()
             if (conn->connected())
             {
                 connCount++;
-                LOG_DEBUG << " connected!";
+                //LOG_DEBUG << " connected!";
                 client->m_user.connected = true;
             }
             else
             {
                 LOG_DEBUG << " disconnected";
-                --connCount;
+                //--connCount;
                 if (connCount == 0)
                     loop.quit();
             }
@@ -82,10 +82,7 @@ int main()
 
             if (client->m_user.authenticated == false && client->m_user.welcome == true)
             {
-                client->AuthenticateResponse(buf);
-
-                // start UserInput thread
-                client->startUserInput(conn);
+                client->AuthenticateResponse(conn, buf);
             }
 
             // Show welcome banner

@@ -27,6 +27,22 @@
 #include <string>
 #include <array>
 
+typedef struct Version
+{
+    size_t major;
+    size_t minor;
+    size_t patch;
+
+    const std::string printVersion() const
+    {
+        char version[64];
+        snprintf(version, 64, "v%zu.%zu.%zu", major, minor, patch);
+        return std::string(version);
+    }
+} Version;
+
+extern Version current;
+
 #define MAX_CONNECTIONS 10
 
 namespace trantor
@@ -161,7 +177,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Parse Input from the clients
      *
      */
-    void ParseInput(const TcpConnectionPtr &ptr, const std::string& input);
+    void ParseInput(const TcpConnectionPtr &ptr, const std::string& input, size_t id);
 
     /**
      * @brief Check if connection is registered

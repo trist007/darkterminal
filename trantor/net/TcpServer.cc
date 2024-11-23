@@ -115,10 +115,10 @@ void TcpServer::startCommand()
 void TcpServer::Command()
 {
     std::string input;
-    std::cout << "Starting Server Command Shell" << std::endl;        
+    std::cout << "Starting Server Command Shell " + current.printVersion() << std::endl;        
     while (input != "/quit")
     {
-        std::cout << "Command: ";
+        std::cout << "\nCommand: ";
         std::getline(std::cin, input);
         if (!input.empty())
         {
@@ -151,7 +151,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
         }
         else
         {
-            tcp->send("access denied, try again");
+            tcp->send("access denied");
         }
     }
 }
@@ -232,7 +232,7 @@ size_t TcpServer::isRegistered(const TcpConnectionPtr &tcp)
     return -1;
 }
 
-void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input)
+void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input, size_t id)
 {
     std::string token;
 
@@ -251,6 +251,15 @@ void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input
             {
                ChangeNick(tcp, token);
             }
+        }
+        else if (token == "/quit")
+        {
+            std::cout << this->m_user_array[id].username << " has logged off" << std::endl;
+            this->m_user_array[id].tcp_ptr = nullptr;
+            this->m_user_array[id].username.clear();;
+            this-> m_user_array[id].connected = false;
+            this-> m_user_array[id].welcome = false;
+            this-> m_user_array[id].authenticated = false;
         }
     }
     else

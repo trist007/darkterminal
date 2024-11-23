@@ -190,7 +190,7 @@ void TcpClient::ParseInput(std::string input)
 
 }
 
-void TcpClient::AuthenticateResponse(MsgBuffer *buffer)
+void TcpClient::AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer)
 {
     std::string response;
     std::string user;
@@ -200,6 +200,7 @@ void TcpClient::AuthenticateResponse(MsgBuffer *buffer)
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         response = std::string(buffer->peek(), buffer->readableBytes());
+        buffer->retrieveAll();
     } while (response.empty());
 
     std::stringstream stream(response);
@@ -210,13 +211,15 @@ void TcpClient::AuthenticateResponse(MsgBuffer *buffer)
 
     if (token1 + " " + token2  == "access granted")
     {
-        std::cout << "access granted" << std::endl;
+        std::cout << token1 + " " + token2 << std::endl;
         this->m_user.authenticated = true;
         this->m_user.username = user;
+        this->startUserInput(conn);
     }
     else
     {
-        std::cerr << "access denied, try again" << std::endl;
+        std::cout << token1 + " " + token2 << std::endl;
+        Authenticate(conn);
     }
 }
 
@@ -228,8 +231,10 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
     //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "user: ";
     std::cin >> user;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "pass: ";
     std::cin >> pass;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     conn->send(user + " " + pass);
 }
@@ -264,7 +269,7 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
     while(userInput != "/quit")
     {
         std::cout << this->m_user.username << ": ";
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, userInput);
         if(!userInput.empty())
         {

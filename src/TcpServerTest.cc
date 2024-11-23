@@ -24,26 +24,12 @@ using namespace trantor;
 #define MINOR 1
 #define PATCH 33
 
-typedef struct Version
-{
-    size_t major;
-    size_t minor;
-    size_t patch;
-
-    std::string printVersion()
-    {
-        char version[64];
-        snprintf(version, 64, "v%zu.%zu.%zu", major, minor, patch);
-        return std::string(version);
-    }
-} Version;
-
 Version current = { MAJOR, MINOR, PATCH };
 
 int main()
 {
-    LOG_DEBUG << "test start";
-    Logger::setLogLevel(Logger::kTrace);
+    //LOG_DEBUG << "test start";
+    //Logger::setLogLevel(Logger::kTrace);
     EventLoopThread loopThread;
     loopThread.run();
 #if USE_IPV6
@@ -53,10 +39,10 @@ int main()
 #endif
     TcpServer server(loopThread.getLoop(), addr, "test");
     server.setBeforeListenSockOptCallback([](int fd) {
-        std::cout << "setBeforeListenSockOptCallback:" << fd << std::endl;
+        //std::cout << "setBeforeListenSockOptCallback:" << fd << std::endl;
     });
     server.setAfterAcceptSockOptCallback([](int fd) {
-        std::cout << "afterAcceptSockOptCallback:" << fd << std::endl;
+        //std::cout << "afterAcceptSockOptCallback:" << fd << std::endl;
     });
     server.startCommand();
     server.setRecvMessageCallback(
@@ -75,7 +61,7 @@ int main()
         }
         else
         {
-            server.ParseInput(connectionPtr, input);
+            server.ParseInput(connectionPtr, input, id);
             std::cout << "\n" + server.m_user_array[id].username << ": " << input << std::endl;
         }
 
@@ -85,8 +71,8 @@ int main()
 
         size_t id;
 
-        LOG_DEBUG << "New connection";
-        connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n");
+        //LOG_DEBUG << "New connection";
+        connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n\n");
         if ((id = server.AddUser(connPtr)) == -1)
         {
             std::cerr << "Max conn of " << server.m_max_conn <<" reached" << std::endl;

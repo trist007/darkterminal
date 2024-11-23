@@ -82,7 +82,7 @@ if(NOT
    "Windows"
    AND CMAKE_CXX_COMPILER_ID MATCHES Clang|GNU
 )
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror)
+  target_compile_options(${PROJECT_NAME} PRIVATE -g -Wall -Wextra -Werror)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Haiku")
