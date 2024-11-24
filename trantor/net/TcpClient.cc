@@ -150,31 +150,6 @@ void TcpClient::stop()
     connector_->stop();
 }
 
-void TcpClient::ResetPassword(std::string password)
-{
-    if(!password.empty())
-    {
-        m_user.requestedpw = password;
-        m_user.resetpass = true;
-    }
-    else
-    {
-        std::cerr << "password is null" << std::endl;
-    }
-}
-
-void TcpClient::ChangeNick(std::string nick)
-{
-    if(!nick.empty())
-    {
-        m_user.username = nick;
-    }
-    else
-    {
-        std::cerr << "nick is null" << std::endl;
-    }
-}
-
 void TcpClient::ParseInput(std::string input)
 {
 
@@ -187,24 +162,18 @@ void TcpClient::ParseInput(std::string input)
 
         if (token == "/nick")
         {
-            std::cout << "nick detected" << std::endl;
             stream >> token;
-            ChangeNick(token);
+            if (token != "/nick")
+            {
+                m_user.changenick = true;
+            }
         }
         else if (token == "/reset")
         {
             stream >> token;
             if (token != "token")
             {
-               ResetPassword(token);
-            }
-        }
-        else if (token == "success")
-        {
-            stream >> token;
-            if (token != "success")
-            {
-                m_user.username = token;
+                m_user.resetpassword = true;
             }
         }
     }
@@ -232,6 +201,20 @@ void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input
             {
                 std::cout << RED;
             }
+        }
+        else if (token == "nick success")
+        {
+            stream >> token;
+            if (token != "nick")
+            {
+                stream >> token;
+                if (token != "success")
+                {
+                    m_user.username = token;
+                }
+
+            }
+
         }
     }
     else

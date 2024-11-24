@@ -69,12 +69,6 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void stop();
 
     /**
-     * @brief change nickname
-     *
-     */
-    void ChangeNick(std::string nick);
-
-    /**
      * @brief parse input from UserInput
      *
      */
@@ -117,6 +111,8 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             connected(false),
             welcome(false),
             userinput(false),
+            changenick(false),
+            resetpassword(false),
             authenticated(false) {}
 
         User() :
@@ -124,12 +120,16 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             connected(false),
             welcome(false),
             userinput(false),
+            changenick(false),
+            resetpassword(false),
             authenticated(false) {}
 
         std::string username;
         bool connected;
         bool welcome;
         bool userinput;
+        bool changenick;
+        bool resetpassword;
         bool authenticated;
     } m_user;
 
