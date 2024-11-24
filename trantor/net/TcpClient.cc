@@ -154,8 +154,8 @@ void TcpClient::ResetPassword(std::string password)
 {
     if(!password.empty())
     {
-        this->m_user.requestedpw = password;
-        this->m_user.resetpass = true;
+        m_user.requestedpw = password;
+        m_user.resetpass = true;
     }
     else
     {
@@ -167,7 +167,7 @@ void TcpClient::ChangeNick(std::string nick)
 {
     if(!nick.empty())
     {
-        this->m_user.username = nick;
+        m_user.username = nick;
     }
     else
     {
@@ -189,7 +189,7 @@ void TcpClient::ParseInput(std::string input)
         {
             std::cout << "nick detected" << std::endl;
             stream >> token;
-            this->ChangeNick(token);
+            ChangeNick(token);
         }
         else if (token == "/reset")
         {
@@ -204,7 +204,7 @@ void TcpClient::ParseInput(std::string input)
             stream >> token;
             if (token != "success")
             {
-                this->m_user.username = token;
+                m_user.username = token;
             }
         }
     }
@@ -263,14 +263,14 @@ void TcpClient::AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *bu
     if (token1 + " " + token2  == "access granted")
     {
         std::cout << token1 + " " + token2 << std::endl;
-        this->m_user.authenticated = true;
-        this->m_user.username = user;
-        this->startUserInput(conn);
+        m_user.authenticated = true;
+        m_user.username = user;
+        startUserInput(conn);
     }
     else
     {
         std::cout << token1 + " " + token2 << std::endl;
-        this->Authenticate(conn);
+        Authenticate(conn);
     }
 }
 
@@ -315,7 +315,7 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
 
 void TcpClient::startUserInput(const TcpConnectionPtr &conn)
 {
-    this->m_user.userinput = true;
+    m_user.userinput = true;
     auto func = std::bind(&TcpClient::UserInput, this, _1);
 
     if(t1.joinable())
@@ -327,13 +327,13 @@ void TcpClient::startUserInput(const TcpConnectionPtr &conn)
 
 void TcpClient::UserInput(const TcpConnectionPtr &conn)
 {
-    //TcpConnectionPtr conn = this->connection();
+    //TcpConnectionPtr conn = connection();
     std::string userInput;
 
 
     //std::cerr << "getting connection\n" << std::endl;
     //const TcpConnectionPtr conn = connection();
-    //std::lock_guard<std::mutex> lock(this->mutex_);
+    //std::lock_guard<std::mutex> lock(mutex_);
 
     if(!conn || !conn->connected())
     {
@@ -342,7 +342,7 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
 
     while(userInput != "/quit")
     {
-        std::cout << this->m_user.username << ": ";
+        std::cout << m_user.username << ": ";
         //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, userInput);
         if(!userInput.empty())
@@ -358,10 +358,10 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
             }
         }
     }
-    this->disconnect();
+    disconnect();
     conn->shutdown();
     std::exit(0);
-    //this->t1.detach();
+    //t1.detach();
 }
 
 void TcpClient::setSockOptCallback(SockOptCallback &&cb)

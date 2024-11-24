@@ -59,15 +59,15 @@ TcpServer::~TcpServer()
 void TcpServer::kickUser(std::string user)
 {
     std::cout << "checking to see if user is online" << std::endl;
-    for (size_t i = 0; i < this->m_user_array.size(); i++)
+    for (size_t i = 0; i < m_user_array.size(); i++)
     {
-        if (user == this->m_user_array[i].username)
+        if (user == m_user_array[i].username)
         {
-            this->connectionClosed(this->m_user_array[i].tcp_ptr);
-            std::cout << "Kicking user " << this->m_user_array[i].username <<
+            connectionClosed(m_user_array[i].tcp_ptr);
+            std::cout << "Kicking user " << m_user_array[i].username <<
                 " off" << std::endl;
-            this->m_user_array[i].connected = false;
-            this->m_user_array[i].tcp_ptr = nullptr;
+            m_user_array[i].connected = false;
+            m_user_array[i].tcp_ptr = nullptr;
         }
     }
 }
@@ -84,11 +84,11 @@ void TcpServer::parseCommand(std::string input)
         if (token == "/list")
         {
             std::cout << "Online Users" << std::endl;
-            for (size_t i = 0; i < this->m_user_array.size(); i++)
+            for (size_t i = 0; i < m_user_array.size(); i++)
             {
-                if (this->m_user_array[i].connected == true)
+                if (m_user_array[i].connected == true)
                 {
-                    std::cout << this->m_user_array[i].username << std::endl;
+                    std::cout << m_user_array[i].username << std::endl;
                 }
             }
             std::cout << m_user_array[0].authenticated << std::endl;
@@ -100,7 +100,7 @@ void TcpServer::parseCommand(std::string input)
             {
                 std::cout << "Attempting to give " << token <<
                     " the boot" << std::endl;
-                this->kickUser(token);
+                kickUser(token);
             }
 
         }
@@ -143,7 +143,7 @@ void TcpServer::Command()
         std::getline(std::cin, input);
         if (!input.empty())
         {
-            this->parseCommand(input);
+            parseCommand(input);
         }
     }
     std::cout << "Closing command shell" << std::endl;
@@ -215,7 +215,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
         stream >> user;
         stream >> pass;
 
-        result = this->AuthenticationDB(user, pass);
+        result = AuthenticationDB(user, pass);
 
         //if ((user == "trist007") && (pass == "trist007"))
         if (result == 0)
@@ -242,7 +242,7 @@ size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
 
     random = std::to_string(dis(e1) + 1000);
     std::lock_guard<std::mutex> lock(m_user_array_mutex);;
-    for (size_t i = 0; i < this->m_max_conn; i++)
+    for (size_t i = 0; i < m_max_conn; i++)
     {
         if (m_user_array[i].tcp_ptr == nullptr)
         {
@@ -298,9 +298,9 @@ size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
 
 size_t TcpServer::isRegistered(const TcpConnectionPtr &tcp)
 {
-    for (size_t i = 0; i < this->m_max_conn; i++)
+    for (size_t i = 0; i < m_max_conn; i++)
     {
-        if (this->m_user_array[i].tcp_ptr == tcp)
+        if (m_user_array[i].tcp_ptr == tcp)
         {
             return i;
         }
@@ -345,12 +345,12 @@ void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input
         }
         else if (token == "/quit")
         {
-            std::cout << this->m_user_array[id].username << " has logged off" << std::endl;
-            this->m_user_array[id].tcp_ptr = nullptr;
-            this->m_user_array[id].username.clear();;
-            this-> m_user_array[id].connected = false;
-            this-> m_user_array[id].welcome = false;
-            this-> m_user_array[id].authenticated = false;
+            std::cout << m_user_array[id].username << " has logged off" << std::endl;
+            m_user_array[id].tcp_ptr = nullptr;
+            m_user_array[id].username.clear();;
+            m_user_array[id].connected = false;
+            m_user_array[id].welcome = false;
+            m_user_array[id].authenticated = false;
         }
     }
     else
