@@ -69,6 +69,12 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void stop();
 
     /**
+     * @brief Process response from server for change nick
+     *
+     */
+    void ChangeNickResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer);
+
+    /**
      * @brief parse input from UserInput
      *
      */
@@ -98,6 +104,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
      */
     void Authenticate(const TcpConnectionPtr &conn);
     void AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer);
+    void ResetPasswordResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer);
 
 
     /**

@@ -103,6 +103,16 @@ int main()
                 std::cout << WHITE;
             }
 
+            if (client->m_user.resetpassword == true)
+            {
+                client->ResetPasswordResponse(conn, buf);
+            }
+
+            if (client->m_user.changenick == true)
+            {
+                client->ChangeNickResponse(conn, buf);
+            }
+
             if (client->m_user.authenticated == false && client->m_user.welcome == true)
             {
                 client->AuthenticateResponse(conn, buf);

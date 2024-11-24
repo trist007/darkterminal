@@ -202,7 +202,7 @@ void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input
                 std::cout << RED;
             }
         }
-        else if (token == "nick success")
+        else if (token == "nick")
         {
             stream >> token;
             if (token != "nick")
@@ -222,6 +222,68 @@ void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input
         std::cerr << "ParseInput: input parameter is null" << std::endl;
     }
 
+}
+
+void TcpClient::ResetPasswordResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+{
+    std::string response;
+    std::string user;
+    std::string token1, token2;
+
+    do
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        response = std::string(buffer->peek(), buffer->readableBytes());
+        buffer->retrieveAll();
+    } while (response.empty());
+
+    std::stringstream stream(response);
+
+    stream >> token1;
+    stream >> token2;
+    stream >> user;
+
+    if (token1 + " " + token2  == "reset success")
+    {
+        m_user.resetpassword = false;
+        m_user.username = user;
+    }
+    else
+    {
+        std::cout << stream.str() << std::endl;
+        m_user.resetpassword = false;
+    }
+}
+
+void TcpClient::ChangeNickResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer)
+{
+    std::string response;
+    std::string user;
+    std::string token1, token2;
+
+    do
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        response = std::string(buffer->peek(), buffer->readableBytes());
+        buffer->retrieveAll();
+    } while (response.empty());
+
+    std::stringstream stream(response);
+
+    stream >> token1;
+    stream >> token2;
+    stream >> user;
+
+    if (token1 + " " + token2  == "nick success")
+    {
+        m_user.changenick = false;
+        m_user.username = user;
+    }
+    else
+    {
+        std::cout << stream.str() << std::endl;
+        m_user.changenick = false;
+    }
 }
 
 void TcpClient::AuthenticateResponse(const TcpConnectionPtr &conn, MsgBuffer *buffer)
