@@ -102,45 +102,66 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
             username(user),
             connected(false),
             welcome(false),
+            changeNick(false),
+            resetPassword(false),
+            directMessage(false),
             authenticated(false) {}
 
         User() :
             tcp_ptr(nullptr),
-            username("anon"),
+            username(""),
             connected(false),
             welcome(false),
+            changeNick(false),
+            resetPassword(false),
+            directMessage(false),
             authenticated(false) {}
 
         TcpConnectionPtr tcp_ptr;
         std::string username;
         bool connected;
         bool welcome;
+        bool changeNick;
+        bool resetPassword;
+        bool directMessage;
         bool authenticated;
     };
-
-    /**
-     * @brief ResetPasswordDB
-     *
-     */
-    size_t ResetPasswordDB(std::string user, std::string pass);
-
-    /**
-     * @brief AuthenticationDB
-     *
-     */
-    size_t AuthenticationDB(std::string user, std::string pass);
-
-    /**
-     * @brief Authentication
-     *
-     */
-    void Authenticate(const TcpConnectionPtr &tcp, std::string &input);
 
     /**
      * @brief Array to hold User info
      *
      */
     std::array<User, m_max_conn> m_user_array;
+
+    /**
+     * @brief Clean up connections
+     *
+     */
+    void directMessage(std::string input, size_t id);
+
+     /**
+     * @brief Clean up connections
+     *
+     */
+    void cleanConnections();
+
+    /**
+     * @brief ResetPasswordDB
+     *
+     */
+    ssize_t ResetPasswordDB(std::string user, std::string pass);
+
+    /**
+     * @brief AuthenticationDB
+     *
+     */
+    ssize_t AuthenticationDB(std::string user, std::string pass);
+
+    /**
+     * @brief Authentication
+     *
+     */
+    void Authenticate(const TcpConnectionPtr &tcp, std::string &input);
 
     /**
      * @brief Kick user off
@@ -171,19 +192,31 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Add user
      *
      */
-    size_t AddUser(const TcpConnectionPtr &tcp);
+    ssize_t AddUser(const TcpConnectionPtr &tcp);
 
     /**
+     * @brief Zero Out user struct
+     *
+     */
+    ssize_t zeroOut(size_t userIndex);
+
+    /**
+     * @brief Find associated tcp connection ptr
+     *
+     */
+    TcpConnectionPtr FindTcpConnection(std::string user);
+
+     /**
      * @brief Find user in struct User
      *
      */
-    size_t FindUser(const TcpConnectionPtr &tcp);
+    ssize_t FindUser(const TcpConnectionPtr &tcp);
 
     /**
      * @brief Change Nick
      *
      */
-    size_t ChangeNick(const TcpConnectionPtr &tcp, std::string& nick);
+    ssize_t ChangeNick(const TcpConnectionPtr &tcp, std::string& input);
 
     /**
      * @brief Parse Input from the clients
@@ -195,7 +228,7 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
      * @brief Check if connection is registered
      *
      */
-    size_t isRegistered(const TcpConnectionPtr &ptr);
+    ssize_t isRegistered(const TcpConnectionPtr &ptr);
 
     /**
      * @brief Set the number of event loops in which the I/O of connections to

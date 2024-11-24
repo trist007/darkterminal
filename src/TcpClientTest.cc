@@ -92,7 +92,8 @@ int main()
 
             std::string input;
 
-            if (client->m_user.authenticated == true && client->m_user.welcome == true)
+            if (client->m_user.authenticated == true && client->m_user.welcome == true &&
+                client->m_user.changenick == false && client->m_user.directMessage == false)
             {
                 // conn->shutdown();
                 input = std::string(buf->peek(), buf->readableBytes());
@@ -103,7 +104,12 @@ int main()
                 std::cout << WHITE;
             }
 
-            if (client->m_user.resetpassword == true)
+            if (client->m_user.directMessage == true)
+            {
+                client->m_user.directMessage = false;
+            }
+
+             if (client->m_user.resetpassword == true)
             {
                 client->ResetPasswordResponse(conn, buf);
             }

@@ -18,6 +18,7 @@
 #include <vector>
 #include <sstream>
 #include <random>
+#include <iomanip>
 #include <mutex>
 #include <algorithm>
 #include "Acceptor.h"
@@ -86,12 +87,15 @@ void TcpServer::parseCommand(std::string input)
             std::cout << "Online Users" << std::endl;
             for (size_t i = 0; i < m_user_array.size(); i++)
             {
-                if (m_user_array[i].connected == true)
+                if (m_user_array[i].connected == true && m_user_array[i].authenticated == false)
+                {
+                    std::cout << m_user_array[i].username << " (unauthenticated)" << std::endl;
+                }
+                else if (m_user_array[i].connected == true && m_user_array[i].authenticated == true)
                 {
                     std::cout << m_user_array[i].username << std::endl;
                 }
             }
-            std::cout << m_user_array[0].authenticated << std::endl;
         }
         else if (token == "/kick")
         {
@@ -121,7 +125,18 @@ void TcpServer::parseCommand(std::string input)
 
         }
     }
-} 
+}
+
+void TcpServer::cleanConnections()
+{
+    for (size_t i = 0; i < m_user_array.size(); i++)
+    {
+        if (m_user_array[i].tcp_ptr == nullptr && m_user_array[i].connected == false)
+        {
+            zeroOut(i);
+        }
+    }
+}
 
 void TcpServer::startCommand()
 {
@@ -136,10 +151,10 @@ void TcpServer::startCommand()
 void TcpServer::Command()
 {
     std::string input;
-    std::cout << "Starting Server Command Shell " + current.printVersion() << std::endl;        
+    std::cout << "Starting Server Command Shell " + current.printVersion() + "\n" << std::endl;
     while (input != "/quit")
     {
-        std::cout << "\nCommand: ";
+        std::cout << "Command: ";
         std::getline(std::cin, input);
         if (!input.empty())
         {
@@ -150,7 +165,7 @@ void TcpServer::Command()
     std::exit(0);
 }
 
-size_t TcpServer::AuthenticationDB(std::string user, std::string pass)
+ssize_t TcpServer::AuthenticationDB(std::string user, std::string pass)
 {
     SQLite::Database db("../darkterminal.db");
     SQLite::Statement query(db, "SELECT password FROM user WHERE username=?");
@@ -175,7 +190,7 @@ size_t TcpServer::AuthenticationDB(std::string user, std::string pass)
     }
 }
 
-size_t TcpServer::ResetPasswordDB(std::string user, std::string pass)
+ssize_t TcpServer::ResetPasswordDB(std::string user, std::string pass)
 {
     SQLite::Database db("../darkterminal.db");
     SQLite::Statement query(db, "UPDATE user set password=? WHERE username=?");
@@ -206,7 +221,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
     std::string user, pass;
     std::string token;
     std::stringstream stream(input);
-    size_t result = -1;
+    ssize_t result = -1;
 
     size_t id = FindUser(tcp);
 
@@ -232,7 +247,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
     }
 }
 
-size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
+ssize_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
 {
     std::string random;
     std::random_device r;
@@ -255,7 +270,7 @@ size_t TcpServer::AddUser(const TcpConnectionPtr &tcp)
     return -1;
 }
 
-size_t TcpServer::FindUser(const TcpConnectionPtr &tcp)
+ssize_t TcpServer::FindUser(const TcpConnectionPtr &tcp)
 {
     for (std::size_t i = 0; i < m_user_array.size(); i++)
     {
@@ -268,8 +283,33 @@ size_t TcpServer::FindUser(const TcpConnectionPtr &tcp)
     return -1;
 }
 
-size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
+ssize_t TcpServer::zeroOut(size_t userIndex)
 {
+    if (userIndex > -1 && userIndex <= m_user_array.size())
+    {
+        connectionClosed(m_user_array[userIndex].tcp_ptr);
+        m_user_array[userIndex].tcp_ptr = nullptr;
+        m_user_array[userIndex].username = "";
+        m_user_array[userIndex].connected = false;
+        m_user_array[userIndex].welcome = false;
+        m_user_array[userIndex].changeNick = false;
+        m_user_array[userIndex].resetPassword = false;
+        m_user_array[userIndex].authenticated = false;
+
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+ssize_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& input)
+{
+    std::stringstream stream(input);
+    std::string nick;
+    stream >> nick;
+    stream >> nick;
     for (std::size_t i = 0; i < m_user_array.size(); i++)
     {
         if (m_user_array[i].tcp_ptr == tcp)
@@ -277,7 +317,8 @@ size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
             if (m_user_array[i].username != nick)   
             {
                 m_user_array[i].username = nick;
-                std::cout << "nick has been updated to " << nick << std::endl; 
+                std::cout << "nick has been updated to " << nick << std::endl;
+                m_user_array[i].changeNick = false;
                 tcp->send("nick success " + nick);
                 return i;
             }
@@ -297,7 +338,35 @@ size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
     return -1;
 }
 
-size_t TcpServer::isRegistered(const TcpConnectionPtr &tcp)
+TcpConnectionPtr TcpServer::FindTcpConnection(std::string user)
+{
+    for (std::size_t i = 0; i < m_user_array.size(); i++)
+    {
+        if (m_user_array[i].username == user)
+        {
+            return m_user_array[i].tcp_ptr;
+        }
+    }
+    return nullptr;
+}
+
+void TcpServer::directMessage(std::string input, size_t id)
+{
+    std::stringstream stream(input);
+    std::string user, token;
+    TcpConnectionPtr connTargetConnection;
+
+    stream >> token;
+    stream >> user;
+
+    connTargetConnection = FindTcpConnection(user);
+    if (connTargetConnection != nullptr)
+    {
+        connTargetConnection->send(input);
+    }
+}
+
+ssize_t TcpServer::isRegistered(const TcpConnectionPtr &tcp)
 {
     for (size_t i = 0; i < m_max_conn; i++)
     {
@@ -312,6 +381,7 @@ size_t TcpServer::isRegistered(const TcpConnectionPtr &tcp)
 void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input, size_t id)
 {
     std::string token;
+    std::string user;
 
     std::stringstream stream(input);
 
@@ -321,13 +391,17 @@ void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input
 
         if (token == "/nick")
         {
-            std::cout << "token 1 = " << token << std::endl;
             stream >> token;
-            std::cout << "token 2 = " << token << std::endl;
             if(token != "/nick")
             {
-               ChangeNick(tcp, token);
+               m_user_array[id].changeNick = true;
+               //ChangeNick(tcp, token);
             }
+        }
+        else if (token == "/user")
+        {
+            stream >> user;;
+            m_user_array[id].directMessage = true;
         }
         else if (token == "/reset")
         {

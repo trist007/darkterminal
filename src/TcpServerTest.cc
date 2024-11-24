@@ -54,14 +54,22 @@ int main()
         buffer->retrieveAll();
 
         id = server.isRegistered(connectionPtr);
+        server.ParseInput(connectionPtr, input, id);
 
         if (server.m_user_array[id].authenticated == false)
         {
             server.Authenticate(connectionPtr, input);
         }
+        else if (server.m_user_array[id].directMessage == true)
+        {
+            server.directMessage(input, id);
+        }
+        else if (server.m_user_array[id].changeNick == true)
+        {
+            server.ChangeNick(connectionPtr, input);
+        }
         else
         {
-            server.ParseInput(connectionPtr, input, id);
             std::cout << "\n" + server.m_user_array[id].username << ": " << input << std::endl;
         }
 
@@ -71,13 +79,28 @@ int main()
 
         size_t id;
 
-        //LOG_DEBUG << "New connection";
-        connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n\n");
-        if ((id = server.AddUser(connPtr)) == -1)
+        if (connPtr->connected())
         {
-            std::cerr << "Max conn of " << server.m_max_conn <<" reached" << std::endl;
-            std::cerr << "Cannot add user" << std::endl;
+            //LOG_DEBUG << "New connection";
+            connPtr->send("Welcome to darkterminal " + current.printVersion() + "\n\n");
+            if ((id = server.AddUser(connPtr)) == -1)
+            {
+                std::cerr << "Max conn of " << server.m_max_conn <<" reached" << std::endl;
+                std::cerr << "Cannot add user" << std::endl;
+            }
         }
+        else if (connPtr->disconnected())
+        {
+            for (size_t i = 0; i < server.m_user_array.size(); i++)
+            {
+                if (server.m_user_array[i].tcp_ptr == connPtr)
+                {
+                    server.zeroOut(i);
+                }
+            }
+        }
+
+        server.cleanConnections();
 
     });
     server.setIoLoopNum(3);

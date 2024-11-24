@@ -150,6 +150,11 @@ void TcpClient::stop()
     connector_->stop();
 }
 
+void TcpClient::directMessage(std::string input)
+{
+    m_user.directMessage = true;
+}
+
 void TcpClient::ParseInput(std::string input)
 {
 
@@ -168,6 +173,14 @@ void TcpClient::ParseInput(std::string input)
                 m_user.changenick = true;
             }
         }
+        else if (token == "/user")
+        {
+            stream >> token;
+            if (token != "/user")
+            {
+                directMessage(input);
+            }
+        }
         else if (token == "/reset")
         {
             stream >> token;
@@ -181,7 +194,6 @@ void TcpClient::ParseInput(std::string input)
     {
         std::cerr << "ParseInput: input parameter is null" << std::endl;
     }
-
 }
 
 void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input)
@@ -199,7 +211,7 @@ void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input
             stream >> token;
             if (token != "/b")
             {
-                std::cout << RED;
+                std::cout << BLUE;
             }
         }
         else if (token == "nick")
@@ -335,24 +347,12 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 
-    std::cout << "pass: ";
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    std::cout << "pass: ";
     std::cin >> pass;
+    //std::getline(std::cin, pass);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-/*
-    if (!std::getline(std::cin, pass))
-    {
-        std::cin.clear();
-        std::cout << std::endl;
-    }
-    while (std::cin >> pass)
-    {
-        if (std::cin.eof())
-        {
-            std::cout << "EOF reached" << std::endl;
-        }
-    }
-*/
+
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
     conn->send(user + " " + pass);
