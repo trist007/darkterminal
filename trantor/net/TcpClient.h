@@ -81,6 +81,12 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void ParseInput(std::string input);
 
     /**
+     * @brief direct message to user
+     *
+     */
+    void directMessage(std::string input);
+
+     /**
      * @brief parse input from UserInput
      *
      */
@@ -120,6 +126,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             userinput(false),
             changenick(false),
             resetpassword(false),
+            directMessage(false),
             authenticated(false) {}
 
         User() :
@@ -129,6 +136,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             userinput(false),
             changenick(false),
             resetpassword(false),
+            directMessage(false),
             authenticated(false) {}
 
         std::string username;
@@ -137,6 +145,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
         bool userinput;
         bool changenick;
         bool resetpassword;
+        bool directMessage;
         bool authenticated;
     } m_user;
 
