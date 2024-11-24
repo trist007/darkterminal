@@ -278,6 +278,7 @@ size_t TcpServer::ChangeNick(const TcpConnectionPtr &tcp, std::string& nick)
             {
                 m_user_array[i].username = nick;
                 std::cout << "nick has been updated to " << nick << std::endl; 
+                tcp->send("nick success " + nick);
                 return i;
             }
             else if (m_user_array[i].username == nick)
