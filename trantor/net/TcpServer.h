@@ -119,6 +119,12 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
     };
 
     /**
+     * @brief ResetPasswordDB
+     *
+     */
+    size_t ResetPasswordDB(std::string user, std::string pass);
+
+    /**
      * @brief AuthenticationDB
      *
      */

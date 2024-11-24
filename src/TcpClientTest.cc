@@ -2,6 +2,7 @@
 #include <trantor/utils/Logger.h>
 #include <trantor/net/EventLoopThread.h>
 #include <string>
+#include <csignal>
 #include <iostream>
 #include <atomic>
 #ifdef _WIN32
@@ -11,10 +12,26 @@
 #include <netinet/tcp.h>
 #endif
 
+#define BLUE    "\033[34m"
+#define GREEN   "\033[32m"
+#define MAGENTA "\033[35m"
+#define RED     "\033[31m"
+#define WHITE   "\033[37m"
+
 using namespace trantor;
 #define USE_IPV6 0
+
+void signalHandler(int signum)
+{
+    std::cout << "Interrupt signal (" << signum << ") received" << std::endl;
+    std::cout << "Use /quit instead" << std::endl;
+    //exit(signum);
+}
+
 int main()
 {
+    signal(SIGINT, signalHandler); 
+
     //trantor::Logger::setLogLevel(trantor::Logger::kTrace);
     //LOG_DEBUG << "TcpClient class test!";
     EventLoop loop;
@@ -73,11 +90,17 @@ int main()
     client->setMessageCallback(
             [&client](const TcpConnectionPtr &conn, MsgBuffer *buf) {
 
+            std::string input;
+
             if (client->m_user.authenticated == true && client->m_user.welcome == true)
             {
                 // conn->shutdown();
-                std::cout << std::string(buf->peek(), buf->readableBytes());
+                input = std::string(buf->peek(), buf->readableBytes());
                 buf->retrieveAll();
+                client->ParseServerInput(conn, input);
+                //std::cout << std::string(buf->peek(), buf->readableBytes());
+                std::cout << input;
+                std::cout << WHITE;
             }
 
             if (client->m_user.authenticated == false && client->m_user.welcome == true)

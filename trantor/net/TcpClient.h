@@ -81,6 +81,12 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
     void ParseInput(std::string input);
 
     /**
+     * @brief parse input from UserInput
+     *
+     */
+    void ParseServerInput(const TcpConnectionPtr &conn, std::string input);
+
+    /**
      * @brief Start UserInput thread
      *
      */
