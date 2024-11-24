@@ -19,6 +19,7 @@
 #include <sstream>
 #include <random>
 #include <mutex>
+#include <algorithm>
 #include "Acceptor.h"
 #include "inner/TcpConnectionImpl.h"
 
@@ -103,6 +104,22 @@ void TcpServer::parseCommand(std::string input)
             }
 
         }
+        else if (token == "/b")
+        {
+            stream >> token; 
+            if (token != "/b")
+            {
+                for (size_t i = 0; i < m_user_array.size(); i++)
+                {
+                    if (m_user_array[i].tcp_ptr != nullptr)
+                    {
+                        m_user_array[i].tcp_ptr->send("\n" + stream.str() + "\n");
+                    }
+                }
+                std::cout << "\033[0m";
+            }
+
+        }
     }
 } 
 
@@ -139,6 +156,32 @@ size_t TcpServer::AuthenticationDB(std::string user, std::string pass)
     SQLite::Statement query(db, "SELECT password FROM user WHERE username=?");
 
     query.bind(1, user);
+
+    std::string result;
+
+    while (query.executeStep())
+    {
+        const std::string value = query.getColumn(0);
+        result = value;
+    }
+
+    if (pass == result)
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+size_t TcpServer::ResetPasswordDB(std::string user, std::string pass)
+{
+    SQLite::Database db("../darkterminal.db");
+    SQLite::Statement query(db, "UPDATE user set password=? WHERE username=?");
+
+    query.bind(1, pass);
+    query.bind(2, user);
 
     std::string result;
 
@@ -283,6 +326,21 @@ void TcpServer::ParseInput(const TcpConnectionPtr &tcp, const std::string& input
             if(token != "/nick")
             {
                ChangeNick(tcp, token);
+            }
+        }
+        else if (token == "/reset")
+        {
+            stream >> token; 
+            if (!ResetPasswordDB(m_user_array[id].username, token))
+            {
+                std::cout << "password reset successfully" << std::endl;
+                tcp->send("reset success");
+
+            }
+            else
+            {
+                std::cout << "unable to reset password" << std::endl;
+                tcp->send("reset failed");
             }
         }
         else if (token == "/quit")

@@ -25,10 +25,18 @@
 #include <sstream>
 #include <chrono>
 #include <cstring>
+#include <cstdio>
 
 #include "Socket.h"
 
 #include <stdio.h>  // snprintf
+#include <termios.h> // disable echo
+
+#define BLUE    "\033[34m"
+#define GREEN   "\033[32m"
+#define MAGENTA "\033[35m"
+#define RED     "\033[31m"
+#define WHITE   "\033[37m"
 
 using namespace trantor;
 using namespace std::placeholders;
@@ -142,6 +150,19 @@ void TcpClient::stop()
     connector_->stop();
 }
 
+void TcpClient::ResetPassword(std::string password)
+{
+    if(!password.empty())
+    {
+        this->m_user.requestedpw = password;
+        this->m_user.resetpass = true;
+    }
+    else
+    {
+        std::cerr << "password is null" << std::endl;
+    }
+}
+
 void TcpClient::ChangeNick(std::string nick)
 {
     if(!nick.empty())
@@ -170,6 +191,14 @@ void TcpClient::ParseInput(std::string input)
             stream >> token;
             this->ChangeNick(token);
         }
+        else if (token == "/reset")
+        {
+            stream >> token;
+            if (token != "token")
+            {
+               ResetPassword(token);
+            }
+        }
         else if (token == "success")
         {
             stream >> token;
@@ -178,9 +207,31 @@ void TcpClient::ParseInput(std::string input)
                 this->m_user.username = token;
             }
         }
-        else
+    }
+    else
+    {
+        std::cerr << "ParseInput: input parameter is null" << std::endl;
+    }
+
+}
+
+void TcpClient::ParseServerInput(const TcpConnectionPtr &conn, std::string input)
+{
+
+    std::stringstream stream(input);
+    std::string token;
+
+    if(!input.empty())
+    {
+        stream >> token;
+
+        if (token == "/b")
         {
-            //std::cout << token << std::endl;
+            stream >> token;
+            if (token != "/b")
+            {
+                std::cout << RED;
+            }
         }
     }
     else
@@ -228,13 +279,36 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
     std::string user;
     std::string pass;
 
+    termios oldt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    termios newt = oldt;
+    newt.c_lflag &= ~ECHO;
+
     //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "user: ";
     std::cin >> user;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+
     std::cout << "pass: ";
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     std::cin >> pass;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+/*
+    if (!std::getline(std::cin, pass))
+    {
+        std::cin.clear();
+        std::cout << std::endl;
+    }
+    while (std::cin >> pass)
+    {
+        if (std::cin.eof())
+        {
+            std::cout << "EOF reached" << std::endl;
+        }
+    }
+*/
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
     conn->send(user + " " + pass);
 }
