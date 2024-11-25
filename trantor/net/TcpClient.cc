@@ -41,6 +41,23 @@
 using namespace trantor;
 using namespace std::placeholders;
 
+struct termios orig_termios;
+
+void enableRawMode()
+{
+    tcgetattr(STDIN_FILENO, &orig_termios);
+
+    struct termios raw = orig_termios;
+    raw.c_lflag &= ~(ECHO);
+
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
+void disableRawMode()
+{
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
+}
+
 namespace trantor
 {
 // void removeConnector(const ConnectorPtr &)
@@ -336,24 +353,18 @@ void TcpClient::Authenticate(const TcpConnectionPtr &conn)
     std::string user;
     std::string pass;
 
-    termios oldt;
-    tcgetattr(STDIN_FILENO, &oldt);
-    termios newt = oldt;
-    newt.c_lflag &= ~ECHO;
-
     //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "user: ";
     std::cin >> user;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     std::cout << "pass: ";
+    enableRawMode();
     std::cin >> pass;
     //std::getline(std::cin, pass);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    disableRawMode();
 
     conn->send(user + " " + pass);
 }
