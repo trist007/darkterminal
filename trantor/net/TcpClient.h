@@ -127,6 +127,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             changenick(false),
             resetpassword(false),
             directMessage(false),
+            newline(false),
             authenticated(false) {}
 
         User() :
@@ -137,6 +138,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
             changenick(false),
             resetpassword(false),
             directMessage(false),
+            newline(false),
             authenticated(false) {}
 
         std::string username;
@@ -146,6 +148,7 @@ class TRANTOR_EXPORT TcpClient : NonCopyable,
         bool changenick;
         bool resetpassword;
         bool directMessage;
+        bool newline;
         bool authenticated;
     } m_user;
 

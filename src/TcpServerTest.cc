@@ -20,6 +20,9 @@
 using namespace trantor;
 #define USE_IPV6 0
 
+#include <unistd.h>
+#include <stdio.h>
+
 #define MAJOR 0
 #define MINOR 1
 #define PATCH 33
@@ -71,6 +74,10 @@ int main()
         else
         {
             std::cout << "\n" + server.m_user_array[id].username << ": " << input << std::endl;
+            server.newline = true;
+            //write(STDOUT_FILENO, "\x1b[2B", 4);
+            //write(STDOUT_FILENO, "\x0d", 1);
+            //write(STDOUT_FILENO, "\r", 1);
         }
 
         // connectionPtr->forceClose();
