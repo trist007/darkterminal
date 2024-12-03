@@ -49,6 +49,7 @@ TcpServer::TcpServer(EventLoop *loop,
 {
     acceptorPtr_->setNewConnectionCallback(
         [this](int fd, const InetAddress &peer) { newConnection(fd, peer); });
+    newline = false;
 }
 
 TcpServer::~TcpServer()
@@ -154,8 +155,23 @@ void TcpServer::Command()
     std::cout << "Starting Server Command Shell " + current.printVersion() + "\n" << std::endl;
     while (input != "/quit")
     {
+        if (newline == true)
+            write(STDOUT_FILENO, "\x1b[1A", 4);
+        newline = false;
         std::cout << "Command: ";
         std::getline(std::cin, input);
+        /*
+        //write(STDOUT_FILENO, "\x1b[r", 3);
+        //write(STDOUT_FILENO, "\x1b[r", 3);
+        write(STDOUT_FILENO, "\x1b[6n", 4);
+        read(STDIN_FILENO, &c, 1);
+        read(STDIN_FILENO, &c, 1);
+        read(STDIN_FILENO, &c, 1);
+        read(STDIN_FILENO, &d, 1);
+        read(STDIN_FILENO, &e, 1);
+        read(STDIN_FILENO, &f, 1);
+        printf("c = %c\nd = %c\ne = %c\nf = %c\n", c, d, e, f);
+        */
         if (!input.empty())
         {
             parseCommand(input);
@@ -236,6 +252,7 @@ void TcpServer::Authenticate(const TcpConnectionPtr &tcp, std::string& input)
         if (result == 0)
         {
             std::cout << "\nSuccessful login for " << user << std::endl;
+            newline = true;
             m_user_array[id].username = user;
             m_user_array[id].authenticated = true;
             tcp->send("access granted " + user);
@@ -362,7 +379,7 @@ void TcpServer::directMessage(std::string input, size_t id)
     connTargetConnection = FindTcpConnection(user);
     if (connTargetConnection != nullptr)
     {
-        connTargetConnection->send(input);
+        connTargetConnection->send(input + "\n");
     }
 }
 

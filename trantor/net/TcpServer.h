@@ -72,6 +72,8 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
               bool reUsePort = true);
     ~TcpServer();
 
+    bool newline;
+
     /**
      * @brief Start the server.
      *

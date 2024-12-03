@@ -398,7 +398,10 @@ void TcpClient::UserInput(const TcpConnectionPtr &conn)
 
     while(userInput != "/quit")
     {
+        if (m_user.newline == true)
+            write(STDOUT_FILENO, "\x1b[1A", 4);
         std::cout << m_user.username << ": ";
+        m_user.newline = false;
         //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, userInput);
         if(!userInput.empty())
