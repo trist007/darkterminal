@@ -24,10 +24,6 @@
 #include "Acceptor.h"
 #include "inner/TcpConnectionImpl.h"
 
-
-#include <SQLiteCpp/SQLiteCpp.h>
-#include <SQLiteCpp/VariadicBind.h>
-
 using namespace trantor;
 using namespace std::placeholders;
 
@@ -183,7 +179,7 @@ void TcpServer::Command()
 
 ssize_t TcpServer::AuthenticationDB(std::string user, std::string pass)
 {
-    SQLite::Database db("../darkterminal.db", SQLite::OPEN_READWRITE, 0, nullptr);
+    //SQLite::Database db("../darkterminal.db", SQLite::OPEN_READWRITE, 0, nullptr);
     SQLite::Statement query(db, "SELECT password FROM user WHERE username=?");
 
     query.bind(1, user);
@@ -208,7 +204,7 @@ ssize_t TcpServer::AuthenticationDB(std::string user, std::string pass)
 
 ssize_t TcpServer::ResetPasswordDB(std::string user, std::string pass)
 {
-    SQLite::Database db("../darkterminal.db");
+    //SQLite::Database db("../darkterminal.db");
     SQLite::Statement query(db, "UPDATE user set password=? WHERE username=?");
 
     query.bind(1, pass);

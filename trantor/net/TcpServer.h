@@ -27,6 +27,9 @@
 #include <string>
 #include <array>
 
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <SQLiteCpp/VariadicBind.h>
+
 typedef struct Version
 {
     size_t major;
@@ -72,6 +75,17 @@ class TRANTOR_EXPORT TcpServer : NonCopyable
               bool reUsePort = true);
     ~TcpServer();
 
+    /**
+     * @brief newline member variable to bring the cursor up 1 row
+     *
+     */
+    SQLite::Database db{"../darkterminal.db", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE};
+    //SQLite::Database db("../darkterminal.db");
+
+    /**
+     * @brief newline member variable to bring the cursor up 1 row
+     *
+     */
     bool newline;
 
     /**
