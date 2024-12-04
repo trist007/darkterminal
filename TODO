@@ -1,0 +1,11 @@
+TODO handle control-D EOF issue
+TODO reset password function (needs read and write db)
+TODO user to user rooms or group of users different color
+TODO jwt json web token
+TODO webcam libcaca
+TODO ncurses frontend
+TODO opengl frontend
+TODO mobile platform
+TODO error handling
+TODO enable TLS
+TODO kickoff/clean dangling connections
