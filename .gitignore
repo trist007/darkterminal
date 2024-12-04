@@ -6,3 +6,7 @@ cmake-build-debug
 CMakeSettings.json
 .cache
 *.db
+*.pem
+*.crt
+*.key
+*.cert

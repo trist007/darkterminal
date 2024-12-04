@@ -41,6 +41,10 @@ int main()
     InetAddress addr(8888);
 #endif
     TcpServer server(loopThread.getLoop(), addr, "test");
+
+    auto policy = TLSPolicy::defaultServerPolicy("../cert.pem", "../key.pem");
+    server.enableSSL(std::move(policy));
+
     server.setBeforeListenSockOptCallback([](int fd) {
         //std::cout << "setBeforeListenSockOptCallback:" << fd << std::endl;
     });
