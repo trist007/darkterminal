@@ -46,8 +46,13 @@ int main()
     std::atomic_int connCount;
     connCount = 10;
     client = std::make_shared<trantor::TcpClient>(&loop,
-            serverAddr,
+           serverAddr,
             "tcpclienttest");
+
+    auto policy = TLSPolicy::defaultClientPolicy();
+    policy->setValidate(false);
+    client->enableSSL(std::move(policy)); 
+
     client->setSockOptCallback([](int fd) {
             //LOG_DEBUG << "setSockOptCallback!";
 #ifdef _WIN32
