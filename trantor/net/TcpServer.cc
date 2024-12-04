@@ -183,7 +183,7 @@ void TcpServer::Command()
 
 ssize_t TcpServer::AuthenticationDB(std::string user, std::string pass)
 {
-    SQLite::Database db("../darkterminal.db");
+    SQLite::Database db("../darkterminal.db", SQLite::OPEN_READWRITE, 0, nullptr);
     SQLite::Statement query(db, "SELECT password FROM user WHERE username=?");
 
     query.bind(1, user);
