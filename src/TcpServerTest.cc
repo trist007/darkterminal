@@ -111,7 +111,7 @@ int main()
             }
         }
 
-        server.cleanConnections();
+        //server.cleanConnections();
 
     });
     server.setIoLoopNum(3);

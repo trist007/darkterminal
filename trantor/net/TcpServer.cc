@@ -298,7 +298,7 @@ ssize_t TcpServer::FindUser(const TcpConnectionPtr &tcp)
 
 ssize_t TcpServer::zeroOut(size_t userIndex)
 {
-    if (userIndex > -1 && userIndex <= m_user_array.size())
+    if ((int)userIndex == 0 || userIndex <= m_user_array.size())
     {
         connectionClosed(m_user_array[userIndex].tcp_ptr);
         m_user_array[userIndex].tcp_ptr = nullptr;
