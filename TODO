@@ -9,3 +9,5 @@ TODO mobile platform
 TODO error handling
 DONE enable TLS
 TODO kickoff/clean dangling connections
+TODO replace cmake with premake
+TODO let users know when new user has joined/left
