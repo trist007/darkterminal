@@ -27,7 +27,7 @@ workspace "trantor"
 
 project "trantor"
     kind "StaticLib"  -- Change to "SharedLib" if BUILD_SHARED_LIBS is enabled
-    defines { "BYTE_ORDER=LITTLE_ENDIAN" }
+    defines { "BYTE_ORDER=LITTLE_ENDIAN", "USE_OPENSSL", "TRANTOR_TLS_PROVIDER=OpenSSL" }
     language "C++"
 
    -- Files and directories
@@ -104,7 +104,8 @@ project "trantor"
         --"trantor/utils/crypto/sha256.h",
         --"trantor/utils/crypto/sha1.h",
         --"trantor/utils/crypto/sha3.h",
-        "trantor/utils/Utilities.h"
+        "trantor/utils/Utilities.h",
+        "trantor/exports.h"
    }
 
     includedirs {
@@ -150,5 +151,6 @@ project "client"
     language "C++"
     files { "src/TcpClientTest.cc" }
     targetdir ("bin/%{cfg.buildcfg}")
-    links { "trantor" }
-    includedirs { "%{prj.location}", "trantor/utils/Utilities.h" }
+    libdirs { "bin/Debug" }
+    links { "trantor", "SQLiteCpp", "sqlite3", "ssl", "crypto", "cares", "pthread", "dl" }
+    includedirs { "%{prj.location}" }
